@@ -1,8 +1,6 @@
 import { Pool } from "@neondatabase/serverless";
 
-export const config = {
-  runtime: "edge",
-};
+export const runtime = "edge"
 
 export const GET = async () => {
   const pool = new Pool({
