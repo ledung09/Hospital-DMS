@@ -15,7 +15,7 @@ export const metadata: Metadata = {
  
 
 
-export const fontSans = FontSans({
+const fontSans = FontSans({
   subsets: ["latin"],
   variable: "--font-sans",
 })
