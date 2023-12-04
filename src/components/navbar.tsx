@@ -1,137 +1,198 @@
 "use client";
 
-import Link, { LinkProps } from "next/link";
-import { usePathname } from "next/navigation";
-import { FC, HTMLAttributes, ReactNode } from "react";
-import {
-  HiOutlineCash,
-  HiOutlineClipboardList,
-  HiOutlineHome,
-  HiOutlineLogout,
-  HiOutlineSearchCircle,
-  HiOutlineUserAdd,
-} from "react-icons/hi";
-import Image from "next/image";
-import { signOut, signIn } from "next-auth/react";
+import * as React from "react";
+import Link from "next/link";
 import { cn } from "@/lib/utils";
-import { Button } from "./ui/button";
 
-export default function Navbar() {
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+  navigationMenuTriggerStyle,
+} from "@/components/ui/navigation-menu";
+
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+  DropdownMenuGroup,
+  DropdownMenuShortcut,
+} from "@/components/ui/dropdown-menu";
+
+import { Button } from "@/components/ui/button";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { signIn, signOut, useSession } from "next-auth/react";
+import Image from "next/image";
+import { usePathname } from "next/navigation";
+
+const components: { title: string; href: string; description: string }[] = [
+  {
+    title: "Find Patient",
+    href: "/patients/find",
+    description:
+      "Search patient information.",
+    },
+  {
+    title: "Add Patient",
+    href: "/patients/add",
+    description:
+      "Add information for a new patient.",
+  }
+];
+
+export function Navbar() {
+  const { data, status } = useSession();
   return (
-    <div className="fixed top-0 left-0 w-60 px-4 py-8 h-full bg-primary text-white flex flex-col gap-y-8">
-      <Logo/>
-      <NavbarLinks/>
-      {/* <SignIn/> */}
-      <Button variant="secondary" size="lg" onClick={() => signIn()} className="mt-auto">
-        Sign In
-      </Button>
-    </div>
-  );
-}
+    <header className="border border-border">
+      <div className="container flex items-center gap-x-4">
+        <Link href="/">
+          <Image src="/header/xlogo.png" width={20} height={20} priority={true} alt="XLogo"/>
+        </Link>
+        <NavigationMenu className="mr-auto">
+          <NavigationMenuList>
 
-const Logo: FC = () => {
-  return (
-    <Link href="/" className="flex items-center gap-x-1">
-      <Image
-        src="/header/logo.png"
-        width={50}
-        height={50}
-        priority={true}
-        alt="Logo"
-      />
-      <p className="text-2xl font-bold mt-1">HospitalX</p>
-    </Link>
-  )
-}
+            <NavigationMenuItem>
+              <Link href="/" legacyBehavior passHref>
+                <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                  Dashboard
+                </NavigationMenuLink>
+              </Link>
+            </NavigationMenuItem>
 
-const NavbarLinks: FC<HTMLAttributes<HTMLDivElement>> = ({ className, ...props }) => {
-  const pathname = usePathname();
-  console.log(pathname);
-  const navbar = [
-    {
-      name: "home",
-      href: "/",
-      icon: <HiOutlineHome />,
-    },
-    {
-      name: "find patient",
-      href: "/findpatient",
-      icon: <HiOutlineSearchCircle />,
-    },
-    {
-      name: "add patient",
-      href: "/addpatient",
-      icon: <HiOutlineUserAdd />,
-    },
-    {
-      name: "doctor cases",
-      href: "/case",
-      icon: <HiOutlineClipboardList />,
-    },
-    {
-      name: "payment report",
-      href: "/payment",
-      icon: <HiOutlineCash />,
-    },
-  ];
+            
+            <NavigationMenuItem>
+              <NavigationMenuTrigger>Patients</NavigationMenuTrigger>
+              <NavigationMenuContent>
+                <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
+                  {components.map((component) => (
+                    <ListItem
+                      key={component.title}
+                      title={component.title}
+                      href={component.href}
+                    >
+                      {component.description}
+                    </ListItem>
+                  ))}
+                </ul>
+              </NavigationMenuContent>
+            </NavigationMenuItem>
 
-  return (
-    <div className={cn("flex flex-col gap-y-6", className)} {...props}>
-      {navbar.map((nav, idx) => {
-        return (
-          <div key={idx} className="flex items-center h-8 w-fit group/navlink">
-            <p className={cn(
-                "text-2xl font-bold w-5 text-transparent group-hover/navlink:text-white",
-                pathname === nav.href && "text-inherit"
-              )}
-            >
-              |
-            </p>
-            <NavbarLink icon={nav.icon} href={nav.href}>
-              {nav.name}
-            </NavbarLink>
-          </div>
-        );
-      })}
-    </div>
-  );
-};
 
-interface NavLink extends LinkProps {
-  icon: ReactNode;
-  children: ReactNode;
-}
 
-const NavbarLink: FC<NavLink> = ({ icon, children, ...props }) => {
-  return (
-    <Link {...props}>
-      <div className="flex gap-x-2.5 items-center text-white text-xl">
-        {icon}
-        <p className="text-lg capitalize font-normal">{children}</p>
+            <NavigationMenuItem>
+              <Link href="/doctors" legacyBehavior passHref>
+                <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                  Doctors
+                </NavigationMenuLink>
+              </Link>
+            </NavigationMenuItem>
+
+            <NavigationMenuItem>
+              <Link href="/payment" legacyBehavior passHref>
+                <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                  Payment Report
+                </NavigationMenuLink>
+              </Link>
+            </NavigationMenuItem>
+          </NavigationMenuList>
+        </NavigationMenu>
+
+        {
+          status === 'authenticated' ?
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" className="relative h-8 w-8 rounded-full">
+                  <Avatar className="h-10 w-10">
+                    <AvatarImage src="/Tutor1.png" alt="@manager" />
+                    <AvatarFallback>MN</AvatarFallback>
+                  </Avatar>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-56 mt-2.5" align="end" forceMount>
+                <DropdownMenuLabel className="font-normal">
+                  <div className="flex flex-col space-y-1">
+                    <p className="text-sm font-medium leading-none">{data.user?.name}</p>
+                    <p className="text-xs leading-none text-muted-foreground">
+                      {data.user?.email}
+                    </p>
+                  </div>
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuGroup>
+                  <DropdownMenuItem>
+                    Profile
+                    <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>
+                    Billing
+                    <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>
+                    Settings
+                    <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>New Team</DropdownMenuItem>
+                </DropdownMenuGroup>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={()=>signOut()}>
+                  Sign out
+                  <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          : 
+            <Button variant="default" size="sm" className="px-4" onClick={()=>signIn()}>Sign In</Button>
+        }
       </div>
-    </Link>
+    </header>
   );
-};
+}
 
-const SignIn: FC = () => {
+const ListItem = React.forwardRef<
+  React.ElementRef<"a">,
+  React.ComponentPropsWithoutRef<"a">
+>(({ className, title, children, ...props }, ref) => {
   return (
-    <div className="w-100 flex items-center gap-x-2 text-white font-medium">
-      <Image
-        src="/Tutor1.png"
-        width={56}
-        height={56}
-        priority={true}
-        alt="Tutor1"
-        className="rounded-full mr-1"
-      />
-      <div className="flex flex-col gap-y-0.5">
-        <p>Nhan Nguyen</p>
-        <p>Manager</p>
-      </div>
-      <button className="ml-auto text-2xl" onClick={() => signOut()}>
-        <HiOutlineLogout/>
-      </button>
-      
-    </div>
+    <li>
+      <NavigationMenuLink asChild>
+        <a
+          ref={ref}
+          className={cn(
+            "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
+            className
+          )}
+          {...props}
+        >
+          <div className="text-sm font-medium leading-none">{title}</div>
+          <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+            {children}
+          </p>
+        </a>
+      </NavigationMenuLink>
+    </li>
+  );
+});
+ListItem.displayName = "ListItem";
+
+
+export default function NavbarHandler({ children } : { children : React.ReactNode}) {
+  const pathname = usePathname()
+  return (
+    <>
+      {pathname.startsWith("/auth") ? (
+        children
+      ) : (
+        <>
+          <Navbar />
+          <main className="container">{children}</main>
+        </>
+      )}
+    </>
   )
 }

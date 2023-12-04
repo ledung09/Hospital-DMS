@@ -1,5 +1,4 @@
 "use client"
-"use client"
 
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
@@ -17,7 +16,6 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 
-import Line from "@/components/ui/line"
 import Image from "next/image"
 import { signIn } from "next-auth/react"
 
@@ -53,8 +51,8 @@ export default function Login() {
   }
 
   return (
-    <div className="flex w-full h-full lg:flex-row-reverse flex-col items-center gap-y-12 justify-between">
-      <div className="lg:basis-1/2 lg:w-0 w-full flex items-center justify-center px-20">
+    <div className="flex w-full h-full lg:flex-row-reverse flex-col items-center gap-y-12">
+      <div className="lg:basis-1/2 h-full  w-full flex items-center justify-center px-20">
         <div className="w-96 lg:mt-0 mt-10">
           <h1 className="text-3xl font-semibold lg:mb-12 mb-8">Sign in to your account</h1>
           <Form {...form}>
@@ -63,8 +61,8 @@ export default function Login() {
                 control={form.control}
                 name="username"
                 render={({ field }) => (
-                  <FormItem className="mb-5">
-                    <FormLabel className="mb-3 hidden lg:block">Username</FormLabel>
+                  <FormItem className="mb-6">
+                    <FormLabel>Username</FormLabel>
                     <FormControl>
                       <Input placeholder="Username..." {...field} />
                     </FormControl>
@@ -76,8 +74,8 @@ export default function Login() {
                 control={form.control}
                 name="password"
                 render={({ field }) => (
-                  <FormItem className="lg:mb-10 mb-6">
-                    <FormLabel className="mb-3 hidden lg:block">Password</FormLabel>
+                  <FormItem className="mb-10">
+                    <FormLabel>Password</FormLabel>
                     <FormControl>
                       <Input placeholder="Password..." type="password" {...field} />
                     </FormControl>
@@ -88,16 +86,10 @@ export default function Login() {
               <Button variant="default" size="lg" className="w-full" type="submit">Sign In</Button>
             </form>
           </Form>
-          <Line text="or"/>
-          <Button variant="outline" size="lg" className="w-full">
-            <Image src="/auth/login/googleIcon.png" width={20} height={20} priority={true} alt="GoogleIcon" className="mr-6"/>
-            Sign in with Google
-          </Button>
         </div>
       </div>
-      <div className="lg:basis-1/2 w-full lg:h-full h-44 flex justify-center">
-        <Image src="/auth/login/hospitalBG.jpg" width={0} height={0} priority={true} alt="HospitalBG" className="mt-0 lg:h-full w-full lg:basis-1/2 object-cover lg:rounded-none blur-[2px]"/>
-      </div>
+      {/* <Image src="/auth/login/hospitalBG.jpg" width={0} height={0} priority={true} alt="HospitalBG" className="lg:basis-1/2 mt-0 lg:h-full object-cover blur-[2px]"/> */}
+      <div className="lg:basis-1/2 mt-0 lg:h-full bg-zinc-900"/>
     </div>
   )
 }

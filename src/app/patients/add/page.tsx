@@ -1,10 +1,8 @@
 "use client"
 
-
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
-
 import { Button } from "@/components/ui/button"
 import {
   Form,
@@ -16,20 +14,17 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-
-import { signIn, useSession } from "next-auth/react"
+import { signIn } from "next-auth/react"
 import { cn } from "@/lib/utils"
-
-
 import { format } from "date-fns"
 import { CalendarIcon } from "lucide-react"
 import { Calendar } from "@/components/ui/calendar"
-
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
+import { toast } from "@/components/ui/use-toast"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Checkbox } from "@/components/ui/checkbox"
 
@@ -85,8 +80,6 @@ export default function Login() {
     console.log(values)
   }
 
-  const { data, status } = useSession();
-  console.log(data, status)
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 max-w-2xl">
@@ -293,9 +286,3 @@ export default function Login() {
     </Form>
   )
 }
-
-
-
-
-
-

@@ -16,10 +16,11 @@ const handler = NextAuth({
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials, req) {
-        // Add logic here to look up the user from the credentials supplied
+        // Add logic here to look up the user from the credentials supplie
+
         var user;
         if (credentials?.username === "x") {
-          user = { id: "1", name: "J Smith", email: "jsmith@example.com" };
+          user = { id: "1", name: "Manager HospitalX", email: "manager.db231@gmail.com" };
         } else user = null;
 
         if (user) {
@@ -37,11 +38,12 @@ const handler = NextAuth({
     }),
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID ?? "",
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? ""
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? "",
+      authorization: 'https://accounts.google.com/o/oauth2/v2/auth?prompt=consent&access_type=offline&response_type=code',
     })
   ],
   pages: {
-    signIn: "/auth/signIn"
+    signIn: "/auth/signIn",
   }
 });
 
