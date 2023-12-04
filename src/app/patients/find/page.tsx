@@ -28,7 +28,7 @@ function formatDate(inputString: string) {
   return `${date.getDate().toString().padStart(2, '0')}/${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getFullYear()}`;
 }
  
-export default function page() {
+export default function Page() {
   const [phoneInput, setPhoneInput] = useState<string>('')
   const [res, setRes] = useState<patientProfile[]>([])
 
