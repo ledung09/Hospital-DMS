@@ -70,9 +70,9 @@ export default function Page() {
         </TableHeader>
         <TableBody>
           {
-            res && res.map((data) => {
+            res && res.map((data, idx) => {
               return (
-                <TableRow>
+                <TableRow key={idx}>
                   <TableCell className="font-medium">{data.patient_number}</TableCell>
                   <TableCell>{data.first_name}</TableCell>
                   <TableCell>{data.last_name}</TableCell>
