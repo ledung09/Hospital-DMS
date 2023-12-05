@@ -92,14 +92,7 @@ export function Navbar() {
                 </NavigationMenuLink>
               </Link>
             </NavigationMenuItem>
-
-            <NavigationMenuItem>
-              <Link href="/payment" legacyBehavior passHref>
-                <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                  Payment Report
-                </NavigationMenuLink>
-              </Link>
-            </NavigationMenuItem>
+            
           </NavigationMenuList>
         </NavigationMenu>
 

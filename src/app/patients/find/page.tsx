@@ -12,22 +12,11 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { useState } from "react"
+import { patientProfile } from "@/types/interface"
+import { formatDate } from "@/lib/utils"
+import Link from "next/link"
+import { HiDocumentText } from "react-icons/hi";
 
-interface patientProfile {
-  address: string;
-  date_of_birth: string;
-  first_name: string;
-  gender: string;
-  last_name: string
-  patient_number: number
-  phone_number: string;
-}
-
-function formatDate(inputString: string) {
-  const date = new Date(inputString);
-  return `${date.getDate().toString().padStart(2, '0')}/${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getFullYear()}`;
-}
- 
 export default function Page() {
   const [phoneInput, setPhoneInput] = useState<string>('')
   const [res, setRes] = useState<patientProfile[]>([])
@@ -66,13 +55,15 @@ export default function Page() {
             <TableHead>Gender</TableHead>
             <TableHead>Address</TableHead>
             <TableHead>Phone</TableHead>
+            <TableHead className="text-center">Payment</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {
             res && res.map((data, idx) => {
               return (
-                <TableRow key={idx}>
+                // <Link href={""}>
+                <TableRow className="cursor-pointer" key={idx} onClick={() => {window.location.href = `/patients/info?id=${data.patient_number}`}}>
                   <TableCell className="font-medium">{data.patient_number}</TableCell>
                   <TableCell>{data.first_name}</TableCell>
                   <TableCell>{data.last_name}</TableCell>
@@ -80,7 +71,13 @@ export default function Page() {
                   <TableCell>{data.gender}</TableCell>
                   <TableCell>{data.address}</TableCell>
                   <TableCell>{data.phone_number}</TableCell>
+                  <TableCell>
+                    <Link href={`/patients/info?id=${data.patient_number}`} >
+                      <HiDocumentText className="text-black mx-auto text-lg font-semibold"/>
+                    </Link>
+                  </TableCell>
                 </TableRow>
+                // </Link>
               )
             })
           }
