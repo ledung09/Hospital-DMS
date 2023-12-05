@@ -117,9 +117,9 @@ export default function Page() {
         </CardHeader>
         <CardContent>
         {
-          admission && admission.map((row) => {
+          admission && admission.map((row, idx) => {
             return (
-            <div className="border mb-4 px-2 rounded-lg">
+            <div className="border mb-4 px-2 rounded-lg" key={idx}>
               <Table >
                 <TableHeader>
                   <TableRow>
@@ -166,13 +166,13 @@ export default function Page() {
                       </TableHeader>
                       <TableBody>
                       {
-                        treatment && treatment.map((treatment_row) => {
+                        treatment && treatment.map((treatment_row, key) => {
                           return (
                             row.patient_number === treatment_row.patient_number && 
                               row.inpatient_code === treatment_row.inpatient_code &&
                               row.admission_timestamp === treatment_row.admission_timestamp
                             && 
-                              <TableRow>
+                              <TableRow key={idx}>
                                 <TableCell className="font-medium">{ treatment_row.doctor_code }</TableCell>
                                 <TableCell>{ treatment_row.patient_number }</TableCell>
                                 <TableCell>{ treatment_row.inpatient_code }</TableCell>
@@ -195,7 +195,7 @@ export default function Page() {
         } 
         </CardContent>
       </Card>
-      
+
       {/* <Card className="my-8">
         <CardHeader>
           <CardTitle>Treatment information</CardTitle>
@@ -263,9 +263,9 @@ export default function Page() {
             </TableHeader>
             <TableBody>
             {
-            examination && examination.map((row) => {
+            examination && examination.map((row, idx) => {
               return (
-                <TableRow>
+                <TableRow key={idx}>
                   <TableCell className="font-medium">{ row.doctor_code }</TableCell>
                   <TableCell>{ row.patient_number }</TableCell>
                   <TableCell>{ row.outpatient_code }</TableCell>
