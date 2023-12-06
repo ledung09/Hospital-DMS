@@ -16,8 +16,10 @@ export interface admission {
   diagnosis: string;
   sick_room: string;
   recovered: boolean;
-  fee: number;
+  fee: number | null;
   discharge_timestamp: string;
+  total_value: number | null;
+  total_fee: number;
 }
 
 export interface treatment {
@@ -35,6 +37,7 @@ export interface treatment_medication extends treatment {
   name_: string;
   price: number;
   quantity: number;
+  total_value: number;
 }
 
 export interface examination {
@@ -45,6 +48,14 @@ export interface examination {
   next_exam_date: string;
   diagnosis: string;
   fee: number;
+}
+
+export interface exam_medication extends examination {
+  medication_code: string;
+  quantity: number;
+  name_: string;
+  price: number;
+  total_value: number;
 }
 
 export interface doctorInfo {

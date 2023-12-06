@@ -16,8 +16,10 @@ import { doctorInfo } from "@/types/interface"
 import { formatDate } from "@/lib/utils"
 import Link from "next/link"
 import { HiDocumentText } from "react-icons/hi";
+import { useRouter } from "next/navigation"
 
 export default function Page() {
+  const router = useRouter()
   const [idInput, setIdInput] = useState<string>('')
   const [res, setRes] = useState<doctorInfo[]>([])
 
@@ -59,14 +61,13 @@ export default function Page() {
             <TableHead>End date</TableHead>
             <TableHead>Working</TableHead>
             <TableHead>Department code</TableHead>
-            <TableHead className="text-center">View detail</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {
             res && res.map((row, idx) => {
               return (
-                <TableRow key={idx}>
+                <TableRow key={idx} className="cursor-pointer" onClick={()=>router.push(`/doctors/info?code=${row.code}`)}>
                   <TableCell className="font-medium">{ row.code }</TableCell>
                   <TableCell>{ row.first_name }</TableCell>
                   <TableCell>{ row.last_name }</TableCell>
@@ -79,11 +80,6 @@ export default function Page() {
                   <TableCell>{ formatDate(row.end_date) }</TableCell>
                   <TableCell>{ row.is_working ? "Yes" : "No" }</TableCell>
                   <TableCell>{ row.dept_code }</TableCell>
-                  <TableCell>
-                    <Link href={ `/patients/info?id=${row.code}` } >
-                      <HiDocumentText className="text-black mx-auto text-lg font-semibold"/>
-                    </Link>
-                  </TableCell>
                 </TableRow>
                 // </Link>
               )

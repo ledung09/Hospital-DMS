@@ -11,7 +11,30 @@ export const GET = async (req: Request) => {
     connectionString: process.env.DATABASE_URL,
   });
 
-  const sql1 =`SELECT * FROM admission where patient_number = ${id}`
+  const sql1 =`
+  SELECT
+    a.*,
+    tm.total_value
+FROM
+    admission a
+LEFT JOIN (
+    SELECT
+        tm.patient_number,
+        tm.admission_timestamp,
+        SUM(tm.quantity * m.price) AS total_value
+    FROM
+        treatment_medication tm
+    JOIN
+        medication m ON tm.medication_code = m.code
+    GROUP BY
+        tm.patient_number,
+        tm.admission_timestamp
+) tm ON a.patient_number = tm.patient_number
+    AND a.admission_timestamp = tm.admission_timestamp
+WHERE
+    a.patient_number = ${id};
+
+  `
   const { rows: admission } = await pool.query(sql1);
 
   const sql2 =`
@@ -33,7 +56,8 @@ export const GET = async (req: Request) => {
     tm.admission_timestamp,
     m.code,
     m.name_,
-    m.price
+    m.price,
+    m.price * tm.quantity AS total_value
   FROM
       (
           SELECT
@@ -63,21 +87,36 @@ export const GET = async (req: Request) => {
   const { rows: treatment_medication } = await pool.query(sql3);
   
 
-  // if (id) {
-  //   sql = `SELECT * FROM patient WHERE patient_number = ${id}`;
+  const sqlSum =`
+  SELECT
+    SUM(a.fee) AS total_fee,
+    SUM(COALESCE(tm.total_value, 0)) AS total_value
+FROM
+    admission a
+LEFT JOIN (
+    SELECT
+        tm.patient_number,
+        tm.admission_timestamp,
+        SUM(tm.quantity * m.price) AS total_value
+    FROM
+        treatment_medication tm
+    JOIN
+        medication m ON tm.medication_code = m.code
+    GROUP BY
+        tm.patient_number,
+        tm.admission_timestamp
+) tm ON a.patient_number = tm.patient_number
+    AND a.admission_timestamp = tm.admission_timestamp
+WHERE
+    a.patient_number = ${id};
+  `
+  const { rows: sum } = await pool.query(sqlSum);
 
-  // } else {
-  //   sql = `SELECT * FROM patient WHERE phone_number = '${phone}'`;
-  // }
-
-  // const { rows } = await pool.query(sql1);
-
-  // const now = rows[0];
   
   await pool.end();
 
   // return Response.json({ hello: now }, {status : 200});
 
-  return Response.json({ admission, treatment, treatment_medication }, { status: 200 });
+  return Response.json({ admission, treatment, treatment_medication, sumtreatment: sum[0].total_fee , sumfee: sum[0].total_value }, { status: 200 });
   
 };

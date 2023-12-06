@@ -66,6 +66,34 @@ export async function POST(req: Request){
     return Response.json({ res: "fail", warning: "Admission timestamp is after Discharge timestamp!" }, { status: 200 });
   }
 
+  const checkValidSql =`
+  SELECT * FROM admission WHERE patient_number = ${body.id} AND admission_timestamp = '${body.admissiontime}';
+  `
+  const { rows: checkValid } = await pool.query(checkValidSql);
+  
+  if (checkValid.length > 0) 
+    return Response.json({ res: "fail", warning: "You already booked an admission at this time!" }, { status: 200 });
+
+// All valid
+
+  const ipcodeSql =`SELECT inpatient_code FROM inpatient where patient_number = ${body.id}`
+  const { rows: ipcode } = await pool.query(ipcodeSql);
+
+  if (ipcode.length === 0) { // new patient
+    const heighestIPSql = `
+    INSERT INTO Inpatient(Patient_Number, Inpatient_Code)
+    VALUES(
+      ${body.id},
+      '${body.ipcode}'
+    );
+    `
+    const { rows: heighestID } = await pool.query(heighestIPSql);
+    
+    return Response.json({ state: "new", ip: "", maxip: heighestID[0].ip_code }, { status: 200 });
+
+  } 
+
+
   const sql =`
   INSERT INTO Admission(Patient_Number, Inpatient_Code, Admission_Timestamp, Nurse_Code, Diagnosis, Sick_Room, Recovered, Fee, Discharge_Timestamp)
   VALUES(

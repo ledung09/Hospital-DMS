@@ -55,14 +55,12 @@ export default function Page() {
             <TableHead>Gender</TableHead>
             <TableHead>Address</TableHead>
             <TableHead>Phone</TableHead>
-            <TableHead className="text-center">Payment</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {
             res && res.map((data, idx) => {
               return (
-                // <Link href={""}>
                 <TableRow className="cursor-pointer" key={idx} onClick={() => {window.location.href = `/patients/info?id=${data.patient_number}`}}>
                   <TableCell className="font-medium">{data.patient_number}</TableCell>
                   <TableCell>{data.first_name}</TableCell>
@@ -71,11 +69,6 @@ export default function Page() {
                   <TableCell>{data.gender}</TableCell>
                   <TableCell>{data.address}</TableCell>
                   <TableCell>{data.phone_number}</TableCell>
-                  <TableCell>
-                    <Link href={`/patients/info?id=${data.patient_number}`} >
-                      <HiDocumentText className="text-black mx-auto text-lg font-semibold"/>
-                    </Link>
-                  </TableCell>
                 </TableRow>
                 // </Link>
               )

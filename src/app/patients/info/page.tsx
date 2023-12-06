@@ -1,5 +1,11 @@
 "use client";
 
+import { Terminal } from "lucide-react"
+import {
+  Alert,
+  AlertDescription,
+  AlertTitle,
+} from "@/components/ui/alert"
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -42,7 +48,8 @@ import {
   admission,
   treatment,
   examination,
-  treatment_medication
+  treatment_medication,
+  exam_medication
 } from "@/types/interface";
 import { formatDate, formatDateTime } from "@/lib/utils";
 import { useSearchParams } from "next/navigation";
@@ -59,6 +66,15 @@ export default function Page() {
   const [examination, setExamination] = useState<examination[]>([]);
 
   const [treatmentMedication, setTreatmentMedication] = useState<treatment_medication[]>([]);
+  const [examMedication, setExamMedication] = useState<exam_medication[]>([]);
+
+
+  const [sumTreatment, setSumTreatment] = useState<number | null>(0)
+  const [sumFee, setSumFee] = useState<number | null>(0)
+
+  const [sumExam, setSumExam] = useState<number | null>(0)
+  const [sumExamMed, setSumExamMed] = useState<number | null>(0)
+
 
   useEffect(() => {
     const getInfo = async () => {
@@ -68,16 +84,23 @@ export default function Page() {
         setInfo(info ? info[0] : undefined);
 
         const response1 = await fetch(`/api/patient/inpatient?id=${id}`);
-        const { admission, treatment, treatment_medication } = await response1.json();
+        const { admission, treatment, treatment_medication, sumtreatment, sumfee } = await response1.json();
+        
         setAdmission(admission);
         setTreatment(treatment);
-        console.log(treatment)
         setTreatmentMedication(treatment_medication);
+        setSumTreatment(sumtreatment);
+        setSumFee(sumfee);
+
+
+
 
         const response2 = await fetch(`/api/patient/outpatient?id=${id}`);
-        const { examination } = await response2.json();
+        const { examination, exam_medication, sumexam, sumexammed } = await response2.json();
         setExamination(examination);
-
+        setExamMedication(exam_medication)
+        setSumExam(sumexam)
+        setSumExamMed(sumexammed)
         
       } else {
         setInfo(undefined);
@@ -158,6 +181,7 @@ export default function Page() {
                         <TableHead>Recovered</TableHead>
                         <TableHead>Fee</TableHead>
                         <TableHead>Discharge timestamp</TableHead>
+                        <TableHead>Total treatment cost</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -171,6 +195,7 @@ export default function Page() {
                         <TableCell>{row.recovered ? "Yes" : "No"}</TableCell>
                         <TableCell>{row.fee}</TableCell>
                         <TableCell>{formatDateTime(row.discharge_timestamp)}</TableCell>
+                        <TableCell>{row.total_value}</TableCell>
                       </TableRow>
                     </TableBody>
                   </Table>
@@ -241,12 +266,14 @@ export default function Page() {
                                                     <TableRow>
                                                       <TableHead>Medication code</TableHead>
                                                       <TableHead>Medication name</TableHead>
-                                                      <TableHead>Medication price</TableHead>
+                                                      <TableHead>Medication price (per item)</TableHead>
                                                       <TableHead>Medication quantity</TableHead>
+                                                      <TableHead>Total price</TableHead>
                                                     </TableRow>
                                                   </TableHeader>
                                                   <TableBody>
-                                                    {treatmentMedication &&
+                                                    {
+                                                      treatmentMedication &&
                                                       treatmentMedication.map((treatment_med_row, idx) => {
                                                         // console.log(treat_med_row)
                                                         return (
@@ -258,6 +285,8 @@ export default function Page() {
                                                               <TableCell>{treatment_med_row.name_}</TableCell>
                                                               <TableCell>{treatment_med_row.price}</TableCell>
                                                               <TableCell>{treatment_med_row.quantity}</TableCell>
+                                                              <TableCell>{treatment_med_row.total_value}</TableCell>
+
 
                                                               
                                                               {/* <TableCell>{row.patient_number}</TableCell>
@@ -296,14 +325,43 @@ export default function Page() {
                   <Button 
                     variant='default' 
                     size="sm" 
-                    className="my-3 mt-2 mx-2"
+                    className="mt-2 mx-2"
                     onClick={() => {
                       router.push(`/patients/add/treatment?id=${id}&admissiontime=${row.admission_timestamp}`)
                     }}
                   >Add treatment</Button>
+
+                  <Alert className="my-5 mt-8">
+                    <Terminal className="h-4 w-4" />
+                    <AlertTitle>
+                      <p className="font-semibold">Treatment(s) cost: <span className="font-normal">{row.total_value === null ? 0 : row.total_value}</span></p>
+                    </AlertTitle>
+                    <AlertTitle className="mt-4">
+                      <p className="font-semibold">Admission fee cost: <span className="font-normal">{row.fee === null ? 0 : row.fee}</span></p>
+                    </AlertTitle>
+                    <AlertTitle className="mt-4">
+                      <p className="font-semibold">Sum cost: <span className="font-normal">{`${parseInt(row.total_value === null ? '0' : row.total_value.toString()) + parseInt(row.fee === null ? '0' : row.fee.toString())}`}</span></p>
+                    </AlertTitle>
+                  </Alert>
+
+
+
                 </div>
               );
             })}
+
+<Alert className="my-5 mt-8 border-red-500">
+                    <Terminal className="h-4 w-4" />
+                    <AlertTitle>
+                      <p className="font-semibold">Total treatments cost: <span className="font-normal">{sumTreatment === null ? 0 : sumTreatment}</span></p>
+                    </AlertTitle>
+                    <AlertTitle className="mt-4">
+                      <p className="font-semibold">Total admission fee: <span className="font-normal">{sumFee === null ? 0: sumFee}</span></p>
+                    </AlertTitle>
+                    <AlertTitle className="mt-4">
+                      <p className="font-semibold">Total admission cost: <span className="font-normal">{`${parseInt(sumTreatment === null ? '0' : sumTreatment.toString()) + parseInt(sumFee === null ? '0' : sumFee.toString())}`}</span></p>
+                    </AlertTitle>
+                  </Alert>
         </CardContent>
       </Card>
 
@@ -315,7 +373,9 @@ export default function Page() {
               <CardTitle>Examination information</CardTitle>
               <CardDescription className="mt-1.5">{id ? `Patient id = ${id}` : ""}</CardDescription>
             </div>
-            <Button variant='default'>Add Examination</Button>
+            <Button variant='default' onClick={()=> {
+              router.push(`/patients/add/examination?id=${id}`)
+            }}>Add Examination</Button>
           </div>
         </CardHeader>
         <CardContent>
@@ -329,6 +389,7 @@ export default function Page() {
                 <TableHead>Next exam timestamp</TableHead>
                 <TableHead>Diagnosis</TableHead>
                 <TableHead>Fee</TableHead>
+                <TableHead>Medication</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -347,11 +408,99 @@ export default function Page() {
                       <TableCell>{formatDate(row.next_exam_date)}</TableCell>
                       <TableCell>{row.diagnosis}</TableCell>
                       <TableCell>{row.fee}</TableCell>
+                      <TableCell>
+                      <Sheet>
+                                          <SheetTrigger>
+                                            {/* <Button 
+                                              variant="default" 
+                                              // onClick={async() => {
+                                              //   const response = await fetch('/api/medication/treatment', {
+                                              //     method: 'POST',
+                                              //     headers: {
+                                              //       'Content-Type': 'application/json',
+                                              //     },
+                                              //     body: JSON.stringify({ 
+                                              //       pid: treatment_row.patient_number,
+                                              //       adtime: treatment_row.admission_timestamp,
+                                              //       starttime: treatment_row.start_timestamp
+                                              //     })
+                                              //   });
+                                              //   const { tasks } = await response.json();
+                                              //   console.log(tasks)
+                                              // }}
+                                            >
+                                              
+                                            </Button> */}
+                                            Open
+                                          </SheetTrigger>
+                                          <SheetContent side="top">
+                                            <SheetHeader>
+                                              <SheetTitle>Examination medication list</SheetTitle>
+                                              <SheetDescription>
+                                                <Table>
+                                                  <TableHeader>
+                                                    <TableRow>
+                                                      <TableHead>Medication code</TableHead>
+                                                      <TableHead>Medication name</TableHead>
+                                                      <TableHead>Medication price (per item)</TableHead>
+                                                      <TableHead>Medication quantity</TableHead>
+                                                      <TableHead>Total price</TableHead>
+                                                    </TableRow>
+                                                  </TableHeader>
+                                                  <TableBody>
+                                                    {
+                                                      examMedication &&
+                                                      examMedication.map((exam_med_row, idx) => {
+                                                        // console.log(treat_med_row)
+                                                        return (
+                                                          row.doctor_code === exam_med_row.doctor_code && 
+                                                          row.exam_timestamp === exam_med_row.exam_timestamp && 
+                                                          (
+                                                            <TableRow key={idx}>
+                                                              <TableCell className="font-medium">{exam_med_row.medication_code}</TableCell>
+                                                              <TableCell>{exam_med_row.name_}</TableCell>
+                                                              <TableCell>{exam_med_row.price}</TableCell>
+                                                              <TableCell>{exam_med_row.quantity}</TableCell>
+                                                              <TableCell>{exam_med_row.total_value}</TableCell>
+
+
+                                                              
+
+                                                            </TableRow>
+                                                          )
+                                                        );
+                                                      })}
+                                                  </TableBody>
+                                                </Table>
+                                              </SheetDescription>
+                                            </SheetHeader>
+                                            <SheetFooter>
+                                                  <SheetClose asChild>
+                                                    <Button type="submit" size="sm" className="mt-8">Close</Button>
+                                                  </SheetClose>
+                                                </SheetFooter>
+                                          </SheetContent>
+                                        </Sheet>
+
+
+                      </TableCell>
                     </TableRow>
                   );
                 })}
             </TableBody>
           </Table>
+          <Alert className="my-5 mt-8 border-red-500">
+                    <Terminal className="h-4 w-4" />
+                    <AlertTitle>
+                      <p className="font-semibold">Total medicines cost: <span className="font-normal">{sumExamMed === null ? 0 : sumExamMed}</span></p>
+                    </AlertTitle>
+                    <AlertTitle className="mt-4">
+                      <p className="font-semibold">Total examination fee: <span className="font-normal">{sumExam === null ? 0: sumExam}</span></p>
+                    </AlertTitle>
+                    <AlertTitle className="mt-4">
+                      <p className="font-semibold">Total examination cost: <span className="font-normal">{`${parseInt(sumExamMed === null ? '0' : sumExamMed.toString()) + parseInt(sumExam === null ? '0' : sumExam.toString())}`}</span></p>
+                    </AlertTitle>
+                  </Alert>
         </CardContent>
       </Card>
     </>

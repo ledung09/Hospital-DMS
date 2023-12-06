@@ -55,7 +55,7 @@ import {
   TabsTrigger,
 } from "@/components/ui/tabs"
 import { useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { formatDateTime, addHoursToDateTime} from "@/lib/utils";
 
 
@@ -84,6 +84,8 @@ const formSchema = z.object({
 
 
 export default function Login() {
+  const router = useRouter()
+
   const [insertState, setInsertState] = useState<boolean>(false)
   const [insertLoading, setInsertLoading] = useState<boolean>(false)
   const [warning, setWarning] = useState<string>("Data input invalid!")
@@ -306,7 +308,7 @@ export default function Login() {
                   <AlertDialogAction>
                     <Button variant='default' size='sm' onClick={() => {
                       if (!insertLoading) {
-                        window.location.href = `/patients/info?id=${id}`
+                        router.push(`/patients/info?id=${id}`)
                       }
                     }}>Continue</Button>
                   </AlertDialogAction>
