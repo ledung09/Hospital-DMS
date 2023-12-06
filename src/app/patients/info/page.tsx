@@ -1,5 +1,16 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetDescription,
+  SheetFooter,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet"
 import {
   Card,
   CardContent,
@@ -31,11 +42,14 @@ import {
   admission,
   treatment,
   examination,
+  treatment_medication
 } from "@/types/interface";
 import { formatDate, formatDateTime } from "@/lib/utils";
 import { useSearchParams } from "next/navigation";
+import { useRouter } from 'next/navigation'
 
 export default function Page() {
+  const router = useRouter()
   const searchParams = useSearchParams();
   const id = searchParams.get("id");
 
@@ -43,6 +57,8 @@ export default function Page() {
   const [admission, setAdmission] = useState<admission[]>([]);
   const [treatment, setTreatment] = useState<treatment[]>([]);
   const [examination, setExamination] = useState<examination[]>([]);
+
+  const [treatmentMedication, setTreatmentMedication] = useState<treatment_medication[]>([]);
 
   useEffect(() => {
     const getInfo = async () => {
@@ -52,13 +68,17 @@ export default function Page() {
         setInfo(info ? info[0] : undefined);
 
         const response1 = await fetch(`/api/patient/inpatient?id=${id}`);
-        const { admission, treatment } = await response1.json();
+        const { admission, treatment, treatment_medication } = await response1.json();
         setAdmission(admission);
         setTreatment(treatment);
+        console.log(treatment)
+        setTreatmentMedication(treatment_medication);
 
         const response2 = await fetch(`/api/patient/outpatient?id=${id}`);
         const { examination } = await response2.json();
         setExamination(examination);
+
+        
       } else {
         setInfo(undefined);
         setAdmission([]);
@@ -111,14 +131,21 @@ export default function Page() {
       </Card>
       <Card className="my-8">
         <CardHeader>
-          <CardTitle>Admission information</CardTitle>
-          <CardDescription>{id ? `Patient id = ${id}` : ""}</CardDescription>
+          <div className="flex justify-between items-center w-100">
+            <div className="flex-col">
+              <CardTitle>Admission information</CardTitle>
+              <CardDescription className="mt-1.5">{id ? `Patient id = ${id}` : ""}</CardDescription>
+            </div>
+            <Button variant='default' onClick={() =>{
+              router.push(`/patients/add/admission?id=${id}`)
+            }}>Add Admission</Button>
+          </div>
         </CardHeader>
         <CardContent>
           {admission &&
             admission.map((row, idx) => {
               return (
-                <div className="border-4 mb-4 px-2 rounded-lg" key={idx}>
+                <div className="border-4 mb-8 px-2 rounded-lg" key={idx}>
                   <Table>
                     <TableHeader>
                       <TableRow>
@@ -135,21 +162,15 @@ export default function Page() {
                     </TableHeader>
                     <TableBody>
                       <TableRow>
-                        <TableCell className="font-medium">
-                          {row.patient_number}
-                        </TableCell>
+                        <TableCell className="font-medium"> {row.patient_number}</TableCell>
                         <TableCell>{row.inpatient_code}</TableCell>
-                        <TableCell>
-                          {formatDateTime(row.admission_timestamp)}
-                        </TableCell>
+                        <TableCell> {formatDateTime(row.admission_timestamp)}</TableCell>
                         <TableCell>{row.nurse_code}</TableCell>
                         <TableCell>{row.diagnosis}</TableCell>
                         <TableCell>{row.sick_room}</TableCell>
                         <TableCell>{row.recovered ? "Yes" : "No"}</TableCell>
                         <TableCell>{row.fee}</TableCell>
-                        <TableCell>
-                          {formatDateTime(row.discharge_timestamp)}
-                        </TableCell>
+                        <TableCell>{formatDateTime(row.discharge_timestamp)}</TableCell>
                       </TableRow>
                     </TableBody>
                   </Table>
@@ -169,45 +190,99 @@ export default function Page() {
                               <TableHead>Start timestamp</TableHead>
                               <TableHead>End timestamp</TableHead>
                               <TableHead>Result</TableHead>
+                              <TableHead>Medication</TableHead>
                             </TableRow>
                           </TableHeader>
                           <TableBody>
                             {treatment &&
                               treatment.map((treatment_row, key) => {
                                 return (
-                                  row.patient_number ===
-                                    treatment_row.patient_number &&
-                                  row.inpatient_code ===
-                                    treatment_row.inpatient_code &&
-                                  row.admission_timestamp ===
-                                    treatment_row.admission_timestamp && (
-                                    <TableRow key={idx}>
-                                      <TableCell className="font-medium">
-                                        {treatment_row.doctor_code}
-                                      </TableCell>
+                                  row.admission_timestamp === treatment_row.admission_timestamp && 
+                                  (
+                                    <TableRow key={key}>
+                                      <TableCell className="font-medium">{treatment_row.doctor_code}</TableCell>
+                                      <TableCell>{treatment_row.patient_number}</TableCell>
+                                      <TableCell>{treatment_row.inpatient_code}</TableCell>
+                                      <TableCell>{formatDateTime(treatment_row.admission_timestamp)}</TableCell>
+                                      <TableCell>{formatDateTime(treatment_row.start_timestamp)}</TableCell>
+                                      <TableCell>{formatDateTime(treatment_row.end_timestamp)}</TableCell>
+                                      <TableCell>{treatment_row.result_}</TableCell>
                                       <TableCell>
-                                        {treatment_row.patient_number}
-                                      </TableCell>
-                                      <TableCell>
-                                        {treatment_row.inpatient_code}
-                                      </TableCell>
-                                      <TableCell>
-                                        {formatDateTime(
-                                          treatment_row.admission_timestamp
-                                        )}
-                                      </TableCell>
-                                      <TableCell>
-                                        {formatDateTime(
-                                          treatment_row.start_timestamp
-                                        )}
-                                      </TableCell>
-                                      <TableCell>
-                                        {formatDateTime(
-                                          treatment_row.end_timestamp
-                                        )}
-                                      </TableCell>
-                                      <TableCell>
-                                        {treatment_row.result_}
+                                        <Sheet>
+                                          <SheetTrigger>
+                                            {/* <Button 
+                                              variant="default" 
+                                              // onClick={async() => {
+                                              //   const response = await fetch('/api/medication/treatment', {
+                                              //     method: 'POST',
+                                              //     headers: {
+                                              //       'Content-Type': 'application/json',
+                                              //     },
+                                              //     body: JSON.stringify({ 
+                                              //       pid: treatment_row.patient_number,
+                                              //       adtime: treatment_row.admission_timestamp,
+                                              //       starttime: treatment_row.start_timestamp
+                                              //     })
+                                              //   });
+                                              //   const { tasks } = await response.json();
+                                              //   console.log(tasks)
+                                              // }}
+                                            >
+                                              
+                                            </Button> */}
+                                            Open
+                                          </SheetTrigger>
+                                          <SheetContent side="top">
+                                            <SheetHeader>
+                                              <SheetTitle>Treatment medication list</SheetTitle>
+                                              <SheetDescription>
+                                                <Table>
+                                                  <TableHeader>
+                                                    <TableRow>
+                                                      <TableHead>Medication code</TableHead>
+                                                      <TableHead>Medication name</TableHead>
+                                                      <TableHead>Medication price</TableHead>
+                                                      <TableHead>Medication quantity</TableHead>
+                                                    </TableRow>
+                                                  </TableHeader>
+                                                  <TableBody>
+                                                    {treatmentMedication &&
+                                                      treatmentMedication.map((treatment_med_row, idx) => {
+                                                        // console.log(treat_med_row)
+                                                        return (
+                                                          treatment_row.admission_timestamp === treatment_med_row.admission_timestamp && 
+                                                          treatment_row.start_timestamp === treatment_med_row.start_timestamp && 
+                                                          (
+                                                            <TableRow key={idx}>
+                                                              <TableCell className="font-medium">{treatment_med_row.code}</TableCell>
+                                                              <TableCell>{treatment_med_row.name_}</TableCell>
+                                                              <TableCell>{treatment_med_row.price}</TableCell>
+                                                              <TableCell>{treatment_med_row.quantity}</TableCell>
+
+                                                              
+                                                              {/* <TableCell>{row.patient_number}</TableCell>
+                                                              <TableCell>{row.outpatient_code}</TableCell>
+                                                              <TableCell>
+                                                                {formatDateTime(row.exam_timestamp)}
+                                                              </TableCell>
+                                                              <TableCell>{formatDate(row.next_exam_date)}</TableCell>
+                                                              <TableCell>{row.diagnosis}</TableCell>
+                                                              <TableCell>{row.fee}</TableCell> */}
+                                                            </TableRow>
+                                                          )
+                                                        );
+                                                      })}
+                                                  </TableBody>
+                                                </Table>
+                                              </SheetDescription>
+                                            </SheetHeader>
+                                            <SheetFooter>
+                                                  <SheetClose asChild>
+                                                    <Button type="submit" size="sm" className="mt-8">Close</Button>
+                                                  </SheetClose>
+                                                </SheetFooter>
+                                          </SheetContent>
+                                        </Sheet>
                                       </TableCell>
                                     </TableRow>
                                   )
@@ -218,59 +293,30 @@ export default function Page() {
                       </AccordionContent>
                     </AccordionItem>
                   </Accordion>
+                  <Button 
+                    variant='default' 
+                    size="sm" 
+                    className="my-3 mt-2 mx-2"
+                    onClick={() => {
+                      router.push(`/patients/add/treatment?id=${id}&admissiontime=${row.admission_timestamp}`)
+                    }}
+                  >Add treatment</Button>
                 </div>
               );
             })}
         </CardContent>
       </Card>
 
-      {/* <Card className="my-8">
-        <CardHeader>
-          <CardTitle>Treatment information</CardTitle>
-          <CardDescription>
-            {id ? `Patient id = ${id}`:""}
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-         
-          <Table >
-            <TableHeader>
-              <TableRow>
-                <TableHead>Doctor code</TableHead>
-                <TableHead>Patient number</TableHead>
-                <TableHead>Inpatient code</TableHead>
-                <TableHead>Admission timestamp</TableHead>
-                <TableHead>Start timestamp</TableHead>
-                <TableHead>End timestamp</TableHead>
-                <TableHead>Result</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-            {
-            treatment && treatment.map((row) => {
-              return (
-                <TableRow>
-                  <TableCell className="font-medium">{ row.doctor_code }</TableCell>
-                  <TableCell>{ row.patient_number }</TableCell>
-                  <TableCell>{ row.inpatient_code }</TableCell>
-                  <TableCell>{ formatDateTime(row.admission_timestamp) }</TableCell>
-                  <TableCell>{ formatDateTime(row.start_timestamp) }</TableCell>
-                  <TableCell>{ formatDateTime(row.end_timestamp) }</TableCell>
-                  <TableCell>{ row.result_ }</TableCell>
-                </TableRow>
-              )
-            })
-            } 
-            </TableBody>
-          </Table>
-          
-        </CardContent>
-      </Card> */}
-
+    
       <Card className="my-8">
         <CardHeader>
-          <CardTitle>Examination information</CardTitle>
-          <CardDescription>{id ? `Patient id = ${id}` : ""}</CardDescription>
+          <div className="flex justify-between items-center w-100">
+            <div className="flex-col">
+              <CardTitle>Examination information</CardTitle>
+              <CardDescription className="mt-1.5">{id ? `Patient id = ${id}` : ""}</CardDescription>
+            </div>
+            <Button variant='default'>Add Examination</Button>
+          </div>
         </CardHeader>
         <CardContent>
           <Table>

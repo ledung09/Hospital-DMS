@@ -30,6 +30,13 @@ export interface treatment {
   result_: string;
 }
 
+export interface treatment_medication extends treatment {
+  code: string;
+  name_: string;
+  price: number;
+  quantity: number;
+}
+
 export interface examination {
   doctor_code: string;
   patient_number: number;
