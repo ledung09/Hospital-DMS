@@ -408,9 +408,9 @@ export default function Login() {
                     <p>Loading...</p>
                     :
                       insertState ? 
-                      <p>Patient data is inserted! Press Continue to redirect to patient's information page.</p>
+                      <p>Patient data is inserted! Press Continue to redirect to patient information page.</p>
                       :
-                      <p>This patient is already in the database! Press Continue to redirect to patient's information page.</p>
+                      <p>This patient is already in the database! Press Continue to redirect to patient information page.</p>
 
 
                   }

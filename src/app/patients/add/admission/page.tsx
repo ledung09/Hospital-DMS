@@ -351,7 +351,7 @@ export default function Login() {
                     <p>Loading...</p>
                     :
                       insertState ? 
-                      <p>Admission data is inserted! Press Continue to redirect to patient's information page.</p>
+                      <p>Admission data is inserted! Press Continue to redirect to patient information page.</p>
                       :
                       <p>{warning}</p>
 
