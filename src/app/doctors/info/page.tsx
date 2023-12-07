@@ -139,7 +139,7 @@ export default function Page() {
 
       <Card className="my-8">
         <CardHeader>
-        <CardTitle>Treatment list</CardTitle>
+        <CardTitle>Admission list</CardTitle>
           <CardDescription>{id ? `Doctor code = ${id}` : ""}</CardDescription>
           </CardHeader>
         <CardContent>

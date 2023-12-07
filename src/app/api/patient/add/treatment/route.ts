@@ -25,10 +25,7 @@ export const GET = async (req: Request) => {
   return Response.json({ ip: IPcode[0].ip_code }, { status: 200 });
 };
 
-function isStartDateBeforeEndDate(
-  startDateString: string,
-  endDateString: string
-) {
+function isStartDateBeforeEndDate( startDateString: string,  endDateString: string) {
   const startDate = new Date(startDateString);
   const endDate = new Date(endDateString);
   return startDate <= endDate;
@@ -66,7 +63,8 @@ export async function POST(req: Request) {
   }
 
   const checkValidSql = `
-  SELECT * FROM treatment WHERE patient_number = ${body.id} AND admission_timestamp = '${body.admissiontime}' AND start_timestamp = '${body.starttime}' AND doctor_code = '${body.doctorcode}';
+  SELECT * FROM treatment WHERE patient_number = ${body.id} 
+  AND admission_timestamp = '${body.admissiontime}' AND start_timestamp = '${body.starttime}' AND doctor_code = '${body.doctorcode}';
   `;
   const { rows: checkValid } = await pool.query(checkValidSql);
 

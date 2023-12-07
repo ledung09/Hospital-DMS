@@ -63,18 +63,20 @@ function displayOP(ip: number) {
 
 const formSchema = z.object({
   outpatientcode: z.string().nullish(),
-  doctorcode: z.string().min(1, {
-    message: "*Username must be at least 2 characters.",
+  doctorcode: z.string().length(10, {
+    message: "*Doctorcode must be exactly 10 characters.",
   }),
   diagnosis: z.string().min(1, {
-    message: "*Username must be at least 2 characters.",
+    message: "*Diagnosis must be at least 1 character.",
+  }).max(200, {
+    message: "*Diagnosis must be at most 200 characters.",
   }),
-  fee: z.string().min(1, {
-    message: "*Password must be at least 2 characters.",
+  fee: z.string().min(3, {
+    message: "*Password must be at least 3 characters.",
   }),
   examtime: z.string(),
   nextexamdate: z.date({
-    required_error: "A date of birth is required.",
+    required_error: "Next exam date is required.",
   }),
 });
 
@@ -166,7 +168,7 @@ export default function Login() {
                 />
               </FormControl>
               <FormDescription>
-                This is your public display name.
+              Outpatient's code.
               </FormDescription>
               <FormMessage />
             </FormItem>
@@ -183,7 +185,7 @@ export default function Login() {
                 <Input placeholder="Enter patient's firstname" {...field} />
               </FormControl>
               <FormDescription>
-                This is your public display name.
+              Outpatient doctor's code.
               </FormDescription>
               <FormMessage />
             </FormItem>
@@ -200,53 +202,19 @@ export default function Login() {
                 <Input placeholder="shadcn" {...field} type="datetime-local" />
               </FormControl>
               <FormDescription>
-                This is your public display name.
+              Outpatient's exam timestamp.
               </FormDescription>
               <FormMessage />
             </FormItem>
           )}
         />
 
-        <FormField
-          control={form.control}
-          name="diagnosis"
-          render={({ field }) => (
-            <FormItem className="basis-1/2">
-              <FormLabel>Diagnosis</FormLabel>
-              <FormControl>
-                <Input placeholder="Enter patient's firstname" {...field} />
-              </FormControl>
-              <FormDescription>
-                This is your public display name.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="fee"
-          render={({ field }) => (
-            <FormItem className="basis-1/2">
-              <FormLabel>Fee</FormLabel>
-              <FormControl>
-                <Input placeholder="Enter patient's firstname" {...field} />
-              </FormControl>
-              <FormDescription>
-                This is your public display name.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
+<FormField
           control={form.control}
           name="nextexamdate"
           render={({ field }) => (
             <FormItem className="flex flex-col">
-              <FormLabel>Date of birth</FormLabel>
+              <FormLabel>Next exam date</FormLabel>
               <Popover>
                 <PopoverTrigger asChild>
                   <FormControl>
@@ -279,13 +247,49 @@ export default function Login() {
                 </PopoverContent>
               </Popover>
               <FormDescription>
-                Your date of birth is used to calculate your age.
+              Outpatient's next exam date.
               </FormDescription>
               <FormMessage />
             </FormItem>
           )}
         />
 
+
+        <FormField
+          control={form.control}
+          name="diagnosis"
+          render={({ field }) => (
+            <FormItem className="basis-1/2">
+              <FormLabel>Diagnosis</FormLabel>
+              <FormControl>
+                <Input placeholder="Enter patient's firstname" {...field} />
+              </FormControl>
+              <FormDescription>
+              Outpatient's diagnosis.
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="fee"
+          render={({ field }) => (
+            <FormItem className="basis-1/2">
+              <FormLabel>Fee</FormLabel>
+              <FormControl>
+                <Input placeholder="Enter patient's firstname" {...field} />
+              </FormControl>
+              <FormDescription>
+              Outpatient's fee.
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        
         <AlertDialog>
           <AlertDialogTrigger asChild>
             <Button type="submit">Submit</Button>

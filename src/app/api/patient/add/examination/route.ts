@@ -50,7 +50,6 @@ function isStartDateBeforeEndDate(startDateString: string, endDateString: string
   return startDate <= endDate;
 }
 
-
 export async function POST(req: Request){
   const body = await req.json()
   const pool = new Pool({
@@ -68,7 +67,6 @@ export async function POST(req: Request){
   if (!isStartDateBeforeEndDate(body.examtime, body.nextexamdate)) {
     return Response.json({ res: "fail", warning: "Exam timestamp is after Next exam date!" }, { status: 200 });
   }
-
 
   const checkValidSql =`
   SELECT * FROM examination WHERE patient_number = ${body.id} AND exam_timestamp = '${body.examtime}' AND	doctor_code = '${body.doctorcode}';

@@ -21,10 +21,14 @@ import { signIn } from "next-auth/react"
 
 const formSchema = z.object({
   username: z.string().min(1, {
-    message: "*Username must be at least 2 characters.",
+    message: "*Username must be at least 1 character.",
+  }).max(20, {
+    message: "*Username must be at most 20 characters.",
   }),
   password: z.string().min(1, {
-    message: "*Password must be at least 2 characters.",
+    message: "*Password must be at least 1 character.",
+  }).max(50, {
+    message: "*Username must be at most 50 characters.",
   }),
 })
 

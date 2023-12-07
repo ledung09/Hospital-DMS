@@ -59,24 +59,31 @@ import { useState } from "react";
 
 const formSchema = z.object({
   firstname: z.string().min(1, {
-    message: "*Username must be at least 2 characters.",
+    message: "*Firstname must be at least 1 character.",
+  }).max(20, {
+    message: "*Firstname must be at most 20 characters"
   }),
   lastname: z.string().min(1, {
-    message: "*Username must be at least 2 characters.",
+    message: "*Lastname must be at least 1 character.",
+  }).max(20, {
+    message: "*Lastname must be at most 20 characters"
   }),
   address: z.string().min(1, {
-    message: "*Password must be at least 2 characters.",
+    message: "*Address must be at least 1 characters.",
+  }).max(200, {
+    message: "*Address must be at most 200 characters"
   }),
-  phone: z.string().min(1, {
-    message: "*Password must be at least 2 characters.",
+  phone: z.string().max(11, {
+    message: "*Phone must be at most 11 characters"
   }),
   dob: z.date({
     required_error: "A date of birth is required.",
   }),
   gender: z.enum(["male", "female"], {
-    required_error: "You need to select a notification type.",
+    required_error: "You need to select a gender.",
   })
 });
+
 
 export default function Login() {
   const [insertState, setInsertState] = useState<boolean>(false)
@@ -139,10 +146,10 @@ export default function Login() {
                 <FormItem className="basis-1/2">
                   <FormLabel>Firstname</FormLabel>
                   <FormControl>
-                    <Input placeholder="Enter patient's firstname" {...field} />
+                    <Input placeholder="Enter patient's firstname..." {...field} />
                   </FormControl>
                   <FormDescription>
-                    This is your public display name.
+                    Patient's firstname.
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -155,10 +162,10 @@ export default function Login() {
                 <FormItem className="basis-1/2">
                   <FormLabel>Lastname</FormLabel>
                   <FormControl>
-                    <Input placeholder="shadcn" {...field} />
+                    <Input placeholder="Enter patient's lastname..." {...field} />
                   </FormControl>
                   <FormDescription>
-                    This is your public display name.
+                  Patient's lastname
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -172,10 +179,10 @@ export default function Login() {
               <FormItem className="basis-1/2">
                 <FormLabel>Address</FormLabel>
                 <FormControl>
-                  <Input placeholder="shadcn" {...field} />
+                  <Input placeholder="Enter patient's address..." {...field} />
                 </FormControl>
                 <FormDescription>
-                  This is your public display name.
+                Patient's address.
                 </FormDescription>
                 <FormMessage />
               </FormItem>
@@ -188,10 +195,10 @@ export default function Login() {
               <FormItem className="basis-1/2">
                 <FormLabel>Phone number</FormLabel>
                 <FormControl>
-                  <Input placeholder="shadcn" {...field} />
+                  <Input placeholder="Enter patient's phone..." {...field} />
                 </FormControl>
                 <FormDescription>
-                  This is your public display name.
+                Patient's phone number.
                 </FormDescription>
                 <FormMessage />
               </FormItem>
@@ -235,7 +242,7 @@ export default function Login() {
                   </PopoverContent>
                 </Popover>
                 <FormDescription>
-                  Your date of birth is used to calculate your age.
+                Patient's date of birth.
                 </FormDescription>
                 <FormMessage />
               </FormItem>

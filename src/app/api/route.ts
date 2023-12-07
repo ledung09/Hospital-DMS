@@ -14,10 +14,18 @@ export const GET = async (req: Request) => {
   var sql = "";
 
   if (id) {
-    sql = `SELECT * FROM patient WHERE patient_number = ${id}`;
+    sql = `
+    PREPARE select_patient AS
+      SELECT * FROM patient WHERE patient_number = $1;
+    EXECUTE select_patient(${id});
+  `;
 
   } else {
-    sql = `SELECT * FROM patient WHERE phone_number = ${phone}`;
+    if (phone) {
+      sql = `
+      SELECT * FROM patient WHERE phone_number = '${phone}'
+      `;
+    }
   }
 
   const { rows } = await pool.query(sql);
@@ -25,8 +33,6 @@ export const GET = async (req: Request) => {
   const now = rows[0];
   
   await pool.end();
-
-  // return Response.json({ hello: now }, {status : 200});
 
   return Response.json({ tasks: now}, { status: 200 });
   

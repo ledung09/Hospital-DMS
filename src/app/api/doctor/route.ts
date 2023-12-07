@@ -21,20 +21,6 @@ export const GET = async (req: Request) => {
   const { rows: examinations } = await pool.query(examinationSql);
 
 
-  
-  
-
-  // if (id) {
-  //   sql = `SELECT * FROM patient WHERE patient_number = ${id}`;
-
-  // } else {
-  //   sql = `SELECT * FROM patient WHERE phone_number = '${phone}'`;
-  // }
-
-  // const { rows } = await pool.query(sql1);
-
-  // const now = rows[0];
-  
   await pool.end();
 
   // return Response.json({ hello: now }, {status : 200});

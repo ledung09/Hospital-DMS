@@ -11,7 +11,9 @@ export const GET = async (req: Request) => {
     connectionString: process.env.DATABASE_URL,
   });
 
-  const sql =`SELECT * FROM examination where patient_number = ${id}`
+  const sql =`
+  SELECT * FROM examination where patient_number = ${id}
+  `
   const { rows: examination } = await pool.query(sql);
 
 
@@ -54,21 +56,7 @@ WHERE
   `
   const { rows: sumexam } = await pool.query(sql3);
   
-
-  // if (id) {
-  //   sql = `SELECT * FROM patient WHERE patient_number = ${id}`;
-
-  // } else {
-  //   sql = `SELECT * FROM patient WHERE phone_number = '${phone}'`;
-  // }
-
-  // const { rows } = await pool.query(sql1);
-
-  // const now = rows[0];
-  
   await pool.end();
-
-  // return Response.json({ hello: now }, {status : 200});
 
   return Response.json({ examination, exam_medication, sumexam: sumexam[0].total_fee, sumexammed: sumexammed[0].total_value }, { status: 200 });
   

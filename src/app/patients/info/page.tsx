@@ -503,6 +503,22 @@ export default function Page() {
                   </Alert>
         </CardContent>
       </Card>
+
+
+      <Card className="my-8 border-2 border-red-500">
+        <CardHeader>
+          <CardTitle>Total payment</CardTitle>
+          <CardDescription>{id ? `Patient id = ${id}` : ""}</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="flex items-center gap-2">
+                <Terminal className="h-4 w-4" />
+                <AlertTitle>
+                  <p className="font-semibold mt-0.5">Total payment: <span className="font-normal">{`${parseInt(sumExamMed === null ? '0' : sumExamMed.toString()) + parseInt(sumExam === null ? '0' : sumExam.toString())+parseInt(sumTreatment === null ? '0' : sumTreatment.toString()) + parseInt(sumFee === null ? '0' : sumFee.toString())}`}</span></p>
+                </AlertTitle>
+          </div>
+        </CardContent>
+      </Card>
     </>
   );
 }

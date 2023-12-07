@@ -33,7 +33,6 @@ LEFT JOIN (
     AND a.admission_timestamp = tm.admission_timestamp
 WHERE
     a.patient_number = ${id};
-
   `
   const { rows: admission } = await pool.query(sql1);
 
@@ -46,7 +45,8 @@ WHERE
     admission a ON t.inpatient_code = a.inpatient_code
                   AND t.admission_timestamp = a.admission_timestamp
   WHERE
-    a.patient_number = ${id};`
+    a.patient_number = ${id};
+    `
   const { rows: treatment } = await pool.query(sql2);
 
   const sql3 =`

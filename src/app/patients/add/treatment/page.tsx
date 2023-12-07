@@ -71,11 +71,14 @@ function displayIP(ip: number) {
 const formSchema = z.object({
   inpatientcode: z.string().nullish(),
   admissiontime: z.string().nullish(),
-  doctorcode: z.string().min(1, {
-    message: "*Username must be at least 2 characters.",
+  doctorcode: z.string().length(10, {
+    message: "*Doctor code must be exactly 10 characters.",
   }),
   result: z.string().min(1, {
-    message: "*Username must be at least 2 characters.",
+    message: "*Result must be at least 1 character.",
+  }).max(200, {
+    message: "*Result must be at most 200 characters.",
+
   }),
   starttime: z.string(),
   endtime: z.string(),
@@ -170,7 +173,7 @@ export default function Login() {
                   />
                 </FormControl>
                 <FormDescription>
-                  This is your public display name.
+                  Inpatient's code.
                 </FormDescription>
                 <FormMessage />
               </FormItem>
@@ -188,7 +191,7 @@ export default function Login() {
                   value={formatDateTime(admissiontime)}/>
                 </FormControl>
                 <FormDescription>
-                  This is your public display name.
+                Inpatient's admission timestamp.
                 </FormDescription>
                 <FormMessage />
               </FormItem>
@@ -209,7 +212,7 @@ export default function Login() {
                     <Input placeholder="Enter patient's firstname" {...field} />
                   </FormControl>
                   <FormDescription>
-                    This is your public display name.
+                  Inpatient doctor's code.
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -226,7 +229,7 @@ export default function Login() {
                     <Input placeholder="Enter patient's firstname" {...field} />
                   </FormControl>
                   <FormDescription>
-                    This is your public display name.
+                  Inpatient's result.
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -243,7 +246,7 @@ export default function Login() {
                     <Input placeholder="shadcn" {...field} type="datetime-local" />
                   </FormControl>
                   <FormDescription>
-                    This is your public display name.
+                  Inpatient's start timestamp.
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -260,7 +263,7 @@ export default function Login() {
                     <Input placeholder="shadcn" {...field} type="datetime-local" />
                   </FormControl>
                   <FormDescription>
-                    This is your public display name.
+                  Inpatient's end timestamp.
                   </FormDescription>
                   <FormMessage />
                 </FormItem>

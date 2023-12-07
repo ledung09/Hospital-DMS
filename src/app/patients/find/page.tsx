@@ -24,23 +24,23 @@ export default function Page() {
   return (
     <>
       <div className="flex w-full max-w-sm items-center space-x-2 my-5">
-        <Input type="text" placeholder="Patient phone number" onChange={(e) => {setPhoneInput(e.target.value)}} value={phoneInput}/>
-        <Button type="button" onClick={
-          async () => {
-            // const response = await fetch('/api', {
-            //   method: 'POST',
-            //   headers: {
-            //     'Content-Type': 'application/json',
-            //   },
-            //   body: JSON.stringify({ name, due, prior, des })
-            // });
-            // const { tasks } = await response.json();
-            const response = await fetch(`/api/patient?phone=${phoneInput}`);
+        <Input type="text" placeholder="Patient phone number/ Patient name" onChange={(e) => {setPhoneInput(e.target.value)}} value={phoneInput}/>
+        <Button 
+          type="button"
+          onClick={async () => {
+            // Check if phoneInput is empty
+            if (phoneInput.trim() === '') {
+              // If phoneInput is empty, do nothing
+              return;
+            }
+        
+            // If phoneInput is not empty, proceed with the API call
+            const response = await fetch(`/api/patient?phone=${phoneInput.trim()}`);
             const { res } = await response.json();
-            console.log(res)
-            setRes(res)
-          }
-        }>
+            console.log(res);
+            setRes(res);
+          }}
+        >
           Search</Button>
       </div>  
       <Table>

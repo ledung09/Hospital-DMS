@@ -71,29 +71,31 @@ function displayIP(ip: number) {
 
 const formSchema = z.object({
   inpatientcode: z.string().nullish(),
-  nursecode: z.string().min(1, {
-    message: "*Username must be at least 2 characters.",
+  nursecode: z.string().length(10, {
+    message: "*Nursecode must be exactly 10 characters.",
   }),
   diagnosis: z.string().min(1, {
-    message: "*Username must be at least 2 characters.",
+    message: "*Diagnosis must be at least 1 characters.",
+  }).max(200, {
+    message: "*Diagnosis must be at most 200 characters.",
   }),
-  sickroom: z.string().min(1, {
-    message: "*Password must be at least 2 characters.",
+  sickroom: z.string().length(6, {
+    message: "*Sickroom must be exactly 6 characters.",
   }),
-  fee: z.string().min(1, {
-    message: "*Password must be at least 2 characters.",
+  fee: z.string().min(3, {
+    message: "*Fee must be at least 3 characters.",
   }),
   admissiontime: z.string(),
   dischargetime: z.string(),
   recovered: z.enum(["yes", "no"], {
-    required_error: "You need to select a notification type.",
+    required_error: "You need to select recover state.",
   })
 });
 
 
 
 export default function Login() {
-  const router = useRouter();
+  const router = useRouter(); 
 
   const [insertState, setInsertState] = useState<boolean>(false)
   const [insertLoading, setInsertLoading] = useState<boolean>(false)
@@ -182,7 +184,7 @@ export default function Login() {
                   />
                 </FormControl>
                 <FormDescription>
-                  This is your public display name.
+                Inpatient's code.
                 </FormDescription>
                 <FormMessage />
               </FormItem>
@@ -199,7 +201,7 @@ export default function Login() {
                     <Input placeholder="shadcn" {...field} type="datetime-local" />
                   </FormControl>
                   <FormDescription>
-                    This is your public display name.
+                  Inpatient's admission timestamp.
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -216,7 +218,7 @@ export default function Login() {
                     <Input placeholder="Enter patient's firstname" {...field} />
                   </FormControl>
                   <FormDescription>
-                    This is your public display name.
+                  Inpatient nurse's code.
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -233,7 +235,7 @@ export default function Login() {
                     <Input placeholder="Enter patient's firstname" {...field} />
                   </FormControl>
                   <FormDescription>
-                    This is your public display name.
+                  Inpatient's diagnosis.
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -250,7 +252,7 @@ export default function Login() {
                     <Input placeholder="Enter patient's firstname" {...field} />
                   </FormControl>
                   <FormDescription>
-                    This is your public display name.
+                  Inpatient's sickroom.
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -303,7 +305,7 @@ export default function Login() {
                     <Input placeholder="Enter patient's firstname" {...field} />
                   </FormControl>
                   <FormDescription>
-                    This is your public display name.
+                  Inpatient's admission fee.
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -320,7 +322,7 @@ export default function Login() {
                     <Input placeholder="shadcn" {...field} type="datetime-local" />
                   </FormControl>
                   <FormDescription>
-                    This is your public display name.
+                  Inpatient's discharge timestamp.
                   </FormDescription>
                   <FormMessage />
                 </FormItem>

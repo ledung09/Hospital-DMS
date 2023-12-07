@@ -18,7 +18,9 @@ export const GET = async (req: Request) => {
     sql = `SELECT * FROM patient WHERE patient_number = ${id}`;
 
   } else {
-    sql = `SELECT * FROM patient WHERE phone_number = '${phone}'`;
+    sql = `SELECT * FROM patient WHERE phone_number = '${phone}'
+    OR CONCAT(last_name, ' ', first_name) ILIKE '${phone}' 
+    `;
   }
 
   const { rows } = await pool.query(sql);

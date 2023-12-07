@@ -1,4 +1,3 @@
-import { test } from "@/app/test/test";
 import NextAuth from "next-auth/next";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { Pool } from "@neondatabase/serverless";
@@ -10,46 +9,29 @@ const handler = NextAuth({
     CredentialsProvider({
       name: "Credentials",
       credentials: {
-        username: { label: "Username", type: "text", placeholder: "jsmith" },
-        password: { label: "Password", type: "password" },
+        username: { label: "Username", type: "text", placeholder: "username" },
+        password: { label: "Password", type: "password",  placeholder: "password"},
       },
       async authorize(credentials, req) {
-        // Add logic here to look up the user from the credentials supplie
-
         const pool = new Pool({
           connectionString: process.env.DATABASE_URL,
-        });
-
+        }); // connect to db
         const sql = `
         SELECT * FROM dba_account
-        WHERE username = '${credentials?.username}' AND password = crypt('${credentials?.password}', password);
+        WHERE username = '${credentials?.username}' 
+        AND password = crypt('${credentials?.password}', password);
         `;
-        
-        const { rows } = await pool.query(sql);
-
+        const { rows } = await pool.query(sql); // run sql
         await pool.end();
-
         var user;
-
         if (rows.length > 0) {
           user = {
-            id: "1",
-            name: "Manager HospitalX",
-            email: "manager.db231@gmail.com",
+            id: rows[0].user_id,
+            name: rows[0].username,
+            email: "",
           };
         } else user = null;
-
-        if (user) {
-          // Any object returned will be saved in `user` property of the JWT
-          console.log("1");
-          return user;
-        } else {
-          console.log("0");
-          // If you return null then an error will be displayed advising the user to check their details.
-          return null;
-
-          // You can also Reject this callback with an Error thus the user will be sent to the error page with the error message as a query parameter
-        }
+        if (user) return user; else return null;
       },
     }),
   ],

@@ -52,8 +52,14 @@ export async function POST(req: Request){
   `
   const { rows } = await pool.query(sql);
 
+  const sql1 =`
+  SELECT MAX(patient_number) AS highest_patient_number
+  FROM patient;
+  `
+  const { rows:maxid } = await pool.query(sql1);
+
   await pool.end();
 
-  return Response.json({ res: body.phone }, { status: 200 });
+  return Response.json({ res: "success", id: maxid[0].highest_patient_number }, { status: 200 });
 
 }
