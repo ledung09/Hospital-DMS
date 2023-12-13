@@ -15,9 +15,15 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-
 import Image from "next/image"
 import { signIn } from "next-auth/react"
+import { AlertCircle } from "lucide-react"
+import {
+  Alert,
+  AlertDescription,
+  AlertTitle,
+} from "@/components/ui/alert"
+import { useSearchParams } from "next/navigation"
 
 const formSchema = z.object({
   username: z.string().min(1, {
@@ -54,6 +60,9 @@ export default function Login() {
     console.log(values)
   }
 
+  const searchParams = useSearchParams()
+  const error = searchParams.get('error')
+
   return (
     <div className="flex w-full h-full lg:flex-row-reverse flex-col items-center gap-y-12">
       <div className="lg:basis-1/2 h-full  w-full flex items-center justify-center px-20">
@@ -65,7 +74,7 @@ export default function Login() {
                 control={form.control}
                 name="username"
                 render={({ field }) => (
-                  <FormItem className="mb-6">
+                  <FormItem className="mb-5">
                     <FormLabel>Username</FormLabel>
                     <FormControl>
                       <Input placeholder="Username..." {...field} />
@@ -78,7 +87,7 @@ export default function Login() {
                 control={form.control}
                 name="password"
                 render={({ field }) => (
-                  <FormItem className="mb-10">
+                  <FormItem>
                     <FormLabel>Password</FormLabel>
                     <FormControl>
                       <Input placeholder="Password..." type="password" {...field} />
@@ -87,7 +96,20 @@ export default function Login() {
                   </FormItem>
                 )}
               />
-              <Button variant="default" size="lg" className="w-full" type="submit">Sign In</Button>
+
+              {
+                error &&  
+                <Alert variant="destructive" className="mt-6">
+                  <AlertCircle className="h-4 w-4" />
+                  <AlertTitle>Error</AlertTitle>
+                  <AlertDescription>
+                    Wrong username or password?
+                  </AlertDescription>
+                </Alert>  
+              }
+              
+
+              <Button variant="default" size="lg" className="w-full mt-10" type="submit">Sign In</Button>
             </form>
           </Form>
         </div>

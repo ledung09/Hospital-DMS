@@ -55,17 +55,7 @@ export function Navbar() {
           <Image src="/header/xlogo.png" width={20} height={20} priority={true} alt="XLogo"/>
         </Link>
         <NavigationMenu className="mr-auto">
-          <NavigationMenuList>
-
-            <NavigationMenuItem>
-              <Link href="/" legacyBehavior passHref>
-                <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                  Dashboard
-                </NavigationMenuLink>
-              </Link>
-            </NavigationMenuItem>
-
-            
+          <NavigationMenuList>            
             <NavigationMenuItem>
               <NavigationMenuTrigger>Patients</NavigationMenuTrigger>
               <NavigationMenuContent>
