@@ -168,12 +168,12 @@ export default function Login() {
               <FormItem className="basis-1/2">
                 <FormLabel>Inpatient code</FormLabel>
                 <FormControl>
-                  <Input placeholder="Enter patient's firstname" {...field} disabled 
+                  <Input placeholder="Enter patient&apos;s firstname" {...field} disabled 
                   value={ip} 
                   />
                 </FormControl>
                 <FormDescription>
-                  Inpatient's code.
+                  Inpatient&apos;s code.
                 </FormDescription>
                 <FormMessage />
               </FormItem>
@@ -187,11 +187,11 @@ export default function Login() {
               <FormItem className="basis-1/2">
                 <FormLabel>Admission timestamp</FormLabel>
                 <FormControl>
-                  <Input placeholder="Enter patient's firstname" {...field} disabled 
+                  <Input placeholder="Enter patient&apos;s firstname" {...field} disabled 
                   value={formatDateTime(admissiontime)}/>
                 </FormControl>
                 <FormDescription>
-                Inpatient's admission timestamp.
+                Inpatient&apos;s admission timestamp.
                 </FormDescription>
                 <FormMessage />
               </FormItem>
@@ -209,10 +209,10 @@ export default function Login() {
                 <FormItem className="basis-1/2">
                   <FormLabel>Doctor Code</FormLabel>
                   <FormControl>
-                    <Input placeholder="Enter patient's firstname" {...field} />
+                    <Input placeholder="Enter patient&apos;s firstname" {...field} />
                   </FormControl>
                   <FormDescription>
-                  Inpatient doctor's code.
+                  Inpatient doctor&apos;s code.
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -226,10 +226,10 @@ export default function Login() {
                 <FormItem className="basis-1/2">
                   <FormLabel>Result</FormLabel>
                   <FormControl>
-                    <Input placeholder="Enter patient's firstname" {...field} />
+                    <Input placeholder="Enter patient&apos;s firstname" {...field} />
                   </FormControl>
                   <FormDescription>
-                  Inpatient's result.
+                  Inpatient&apos;s result.
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -246,7 +246,7 @@ export default function Login() {
                     <Input placeholder="shadcn" {...field} type="datetime-local" />
                   </FormControl>
                   <FormDescription>
-                  Inpatient's start timestamp.
+                  Inpatient&apos;s start timestamp.
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -263,7 +263,7 @@ export default function Login() {
                     <Input placeholder="shadcn" {...field} type="datetime-local" />
                   </FormControl>
                   <FormDescription>
-                  Inpatient's end timestamp.
+                  Inpatient&apos;s end timestamp.
                   </FormDescription>
                   <FormMessage />
                 </FormItem>

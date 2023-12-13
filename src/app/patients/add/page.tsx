@@ -308,7 +308,7 @@ export default function Login() {
                 <FormItem className="basis-1/2">
                   <FormLabel>Nurse Code</FormLabel>
                   <FormControl>
-                    <Input placeholder="Enter patient's firstname" {...field} />
+                    <Input placeholder="Enter patient`'s` firstname" {...field} />
                   </FormControl>
                   <FormDescription>
                     This is your public display name.
