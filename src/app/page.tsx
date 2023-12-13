@@ -3,8 +3,8 @@
 import { useRouter } from 'next/navigation'
 
 export default function Page() {
-  const router = useRouter();
-  router.push('/patients/find')
+  // const router = useRouter();
+  // router.push('/patients/find')
   return (
     <></>
   )
