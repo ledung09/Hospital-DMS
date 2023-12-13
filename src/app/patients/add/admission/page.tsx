@@ -179,12 +179,12 @@ export default function Login() {
               <FormItem className="basis-1/2">
                 <FormLabel>Inpatient code</FormLabel>
                 <FormControl>
-                  <Input placeholder="Enter patient's firstname" {...field} disabled 
+                  <Input placeholder="Enter patient&apos;s firstname" {...field} disabled 
                   value={ip === "" ? displayIP(maxip+1) : ip} 
                   />
                 </FormControl>
                 <FormDescription>
-                Inpatient's code.
+                Inpatient&apos;s code.
                 </FormDescription>
                 <FormMessage />
               </FormItem>
@@ -201,7 +201,7 @@ export default function Login() {
                     <Input placeholder="shadcn" {...field} type="datetime-local" />
                   </FormControl>
                   <FormDescription>
-                  Inpatient's admission timestamp.
+                  Inpatient&apos;s admission timestamp.
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -215,10 +215,10 @@ export default function Login() {
                 <FormItem className="basis-1/2">
                   <FormLabel>Nurse Code</FormLabel>
                   <FormControl>
-                    <Input placeholder="Enter patient's firstname" {...field} />
+                    <Input placeholder="Enter patient&apos;s firstname" {...field} />
                   </FormControl>
                   <FormDescription>
-                  Inpatient nurse's code.
+                  Inpatient nurse&apos;s code.
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -232,10 +232,10 @@ export default function Login() {
                 <FormItem className="basis-1/2">
                   <FormLabel>Diagnosis</FormLabel>
                   <FormControl>
-                    <Input placeholder="Enter patient's firstname" {...field} />
+                    <Input placeholder="Enter patient&apos;s firstname" {...field} />
                   </FormControl>
                   <FormDescription>
-                  Inpatient's diagnosis.
+                  Inpatient&apos;s diagnosis.
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -249,10 +249,10 @@ export default function Login() {
                 <FormItem className="basis-1/2">
                   <FormLabel>Sickroom</FormLabel>
                   <FormControl>
-                    <Input placeholder="Enter patient's firstname" {...field} />
+                    <Input placeholder="Enter patient&apos;s firstname" {...field} />
                   </FormControl>
                   <FormDescription>
-                  Inpatient's sickroom.
+                  Inpatient&apos;s sickroom.
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -302,10 +302,10 @@ export default function Login() {
                 <FormItem className="basis-1/2">
                   <FormLabel>Fee</FormLabel>
                   <FormControl>
-                    <Input placeholder="Enter patient's firstname" {...field} />
+                    <Input placeholder="Enter patient&apos;s firstname" {...field} />
                   </FormControl>
                   <FormDescription>
-                  Inpatient's admission fee.
+                  Inpatient&apos;s admission fee.
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -322,7 +322,7 @@ export default function Login() {
                     <Input placeholder="shadcn" {...field} type="datetime-local" />
                   </FormControl>
                   <FormDescription>
-                  Inpatient's discharge timestamp.
+                  Inpatient&apos;s discharge timestamp.
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
