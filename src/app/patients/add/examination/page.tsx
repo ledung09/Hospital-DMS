@@ -161,14 +161,14 @@ export default function Login() {
               <FormLabel>Outpatient code</FormLabel>
               <FormControl>
                 <Input
-                  placeholder="Enter patient's firstname"
+                  placeholder="Enter patient&apos;s firstname"
                   {...field}
                   disabled
                   value={ip === "" ? displayOP(maxip + 1) : ip}
                 />
               </FormControl>
               <FormDescription>
-              Outpatient's code.
+              Outpatient&apos;s code.
               </FormDescription>
               <FormMessage />
             </FormItem>
@@ -182,10 +182,10 @@ export default function Login() {
             <FormItem className="basis-1/2">
               <FormLabel>Doctor Code</FormLabel>
               <FormControl>
-                <Input placeholder="Enter patient's firstname" {...field} />
+                <Input placeholder="Enter patient&apos;s firstname" {...field} />
               </FormControl>
               <FormDescription>
-              Outpatient doctor's code.
+              Outpatient doctor&apos;s code.
               </FormDescription>
               <FormMessage />
             </FormItem>
@@ -202,7 +202,7 @@ export default function Login() {
                 <Input placeholder="shadcn" {...field} type="datetime-local" />
               </FormControl>
               <FormDescription>
-              Outpatient's exam timestamp.
+              Outpatient&apos;s exam timestamp.
               </FormDescription>
               <FormMessage />
             </FormItem>
@@ -247,7 +247,7 @@ export default function Login() {
                 </PopoverContent>
               </Popover>
               <FormDescription>
-              Outpatient's next exam date.
+              Outpatient&apos;s next exam date.
               </FormDescription>
               <FormMessage />
             </FormItem>
@@ -262,10 +262,10 @@ export default function Login() {
             <FormItem className="basis-1/2">
               <FormLabel>Diagnosis</FormLabel>
               <FormControl>
-                <Input placeholder="Enter patient's firstname" {...field} />
+                <Input placeholder="Enter patient&apos;s firstname" {...field} />
               </FormControl>
               <FormDescription>
-              Outpatient's diagnosis.
+              Outpatient&apos;s diagnosis.
               </FormDescription>
               <FormMessage />
             </FormItem>
@@ -279,10 +279,10 @@ export default function Login() {
             <FormItem className="basis-1/2">
               <FormLabel>Fee</FormLabel>
               <FormControl>
-                <Input placeholder="Enter patient's firstname" {...field} />
+                <Input placeholder="Enter patient&apos;s firstname" {...field} />
               </FormControl>
               <FormDescription>
-              Outpatient's fee.
+              Outpatient&apos;s fee.
               </FormDescription>
               <FormMessage />
             </FormItem>

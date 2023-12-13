@@ -146,10 +146,10 @@ export default function Login() {
                 <FormItem className="basis-1/2">
                   <FormLabel>Firstname</FormLabel>
                   <FormControl>
-                    <Input placeholder="Enter patient's firstname..." {...field} />
+                    <Input placeholder="Enter patient&apos;s firstname..." {...field} />
                   </FormControl>
                   <FormDescription>
-                    Patient's firstname.
+                    Patient&apos;s firstname.
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -162,10 +162,10 @@ export default function Login() {
                 <FormItem className="basis-1/2">
                   <FormLabel>Lastname</FormLabel>
                   <FormControl>
-                    <Input placeholder="Enter patient's lastname..." {...field} />
+                    <Input placeholder="Enter patient&apos;s lastname..." {...field} />
                   </FormControl>
                   <FormDescription>
-                  Patient's lastname
+                  Patient&apos;s lastname
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -179,10 +179,10 @@ export default function Login() {
               <FormItem className="basis-1/2">
                 <FormLabel>Address</FormLabel>
                 <FormControl>
-                  <Input placeholder="Enter patient's address..." {...field} />
+                  <Input placeholder="Enter patient&apos;s address..." {...field} />
                 </FormControl>
                 <FormDescription>
-                Patient's address.
+                Patient&apos;s address.
                 </FormDescription>
                 <FormMessage />
               </FormItem>
@@ -195,10 +195,10 @@ export default function Login() {
               <FormItem className="basis-1/2">
                 <FormLabel>Phone number</FormLabel>
                 <FormControl>
-                  <Input placeholder="Enter patient's phone..." {...field} />
+                  <Input placeholder="Enter patient&apos;s phone..." {...field} />
                 </FormControl>
                 <FormDescription>
-                Patient's phone number.
+                Patient&apos;s phone number.
                 </FormDescription>
                 <FormMessage />
               </FormItem>
@@ -242,7 +242,7 @@ export default function Login() {
                   </PopoverContent>
                 </Popover>
                 <FormDescription>
-                Patient's date of birth.
+                Patient&apos;s date of birth.
                 </FormDescription>
                 <FormMessage />
               </FormItem>
