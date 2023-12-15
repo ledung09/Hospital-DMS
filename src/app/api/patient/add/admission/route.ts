@@ -54,15 +54,19 @@ export async function POST(req: Request){
     connectionString: process.env.DATABASE_URL,
   });
 
-  const nurseSql =`
-  SELECT code FROM nurse WHERE code = '${body.nursecode}'
-  `
-  const { rows: nurses } = await pool.query(nurseSql);
-  
-  if (nurses.length === 0) 
-    return Response.json({ res: "fail", warning: "Nurse code doesn't exist!" }, { status: 200 });
 
-  if (!isStartDateBeforeEndDate(body.admissiontime, body.dischargetime)) {
+  if (body.nursecode.length > 0) {
+    const nurseSql =`
+    SELECT code FROM nurse WHERE code = '${body.nursecode}'
+    `
+    const { rows: nurses } = await pool.query(nurseSql);
+    
+    if (nurses.length === 0) 
+      return Response.json({ res: "fail", warning: "Nurse code doesn't exist!" }, { status: 200 });
+  }
+
+
+  if (body.dischargetime.length > 0 && !isStartDateBeforeEndDate(body.admissiontime, body.dischargetime)) {
     return Response.json({ res: "fail", warning: "Admission timestamp is after Discharge timestamp!" }, { status: 200 });
   }
 
@@ -100,12 +104,12 @@ export async function POST(req: Request){
     ${body.id},
     '${body.ipcode}',
     '${body.admissiontime}',
-    '${body.nursecode}',
+    ${body.nursecode === "" ? null : `'${body.nursecode}'`},
     '${body.diagnosis}',
     '${body.sickroom}',
     '${body.recovered === 'yes' ? 'TRUE': 'FALSE'}',
     '${body.fee}',
-    '${body.dischargetime}'
+    ${body.dischargetime === "" ? null : `'${body.dischargetime}'`}
   );
   `
   const { rows } = await pool.query(sql);

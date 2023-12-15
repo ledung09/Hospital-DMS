@@ -3,6 +3,8 @@
 import * as React from "react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { Toaster } from "@/components/ui/toaster"
+
 
 import {
   NavigationMenu,
@@ -48,6 +50,7 @@ const components: { title: string; href: string; description: string }[] = [
 
 export function Navbar() {
   const { data, status } = useSession();
+  console.log(data)
   return (
     <header className="border border-border">
       <div className="container flex items-center gap-x-4">
@@ -157,6 +160,7 @@ export default function NavbarHandler({ children } : { children : React.ReactNod
           <main className="container">{children}</main>
         </>
       )}
+      <Toaster />
     </>
   )
 }

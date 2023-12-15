@@ -16,12 +16,23 @@ const handler = NextAuth({
         const pool = new Pool({
           connectionString: process.env.DATABASE_URL,
         }); // connect to db
+
         const sql = `
         SELECT * FROM dba_account
         WHERE username = '${credentials?.username}' 
         AND password = crypt('${credentials?.password}', password);
         `;
+
+        // const sql = `
+        // SELECT * FROM dba_account
+        // WHERE (username = '${credentials?.username}')
+        // AND (password = '${credentials?.password}');
+        // `;
+
+        // console.log(sql)
+        
         const { rows } = await pool.query(sql); // run sql
+
         await pool.end();
         var user;
         if (rows.length > 0) {

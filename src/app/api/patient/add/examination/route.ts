@@ -64,7 +64,7 @@ export async function POST(req: Request){
   if (doctors.length === 0) 
     return Response.json({ res: "fail", warning: "Doctor code doesn't exist!" }, { status: 200 });
 
-  if (!isStartDateBeforeEndDate(body.examtime, body.nextexamdate)) {
+  if (body.nextexamdate !== "" && !isStartDateBeforeEndDate(body.examtime, body.nextexamdate)) {
     return Response.json({ res: "fail", warning: "Exam timestamp is after Next exam date!" }, { status: 200 });
   }
 
@@ -101,7 +101,7 @@ export async function POST(req: Request){
     ${body.id},
     '${body.opcode}',
     '${body.examtime}',
-    '${body.nextexamdate}',
+    ${body.nextexamdate === '' ? null : `'${body.nextexamdate}'`},
     '${body.diagnosis}',
     ${body.fee}
   );

@@ -93,8 +93,8 @@ export default function Page() {
             <TableHeader>
               <TableRow>
                 <TableHead>Code</TableHead>
-                <TableHead>Firstname</TableHead>
                 <TableHead>Lastname</TableHead>
+                <TableHead>Firstname</TableHead>
                 <TableHead>DOB</TableHead>
                 <TableHead>Gender</TableHead>
                 <TableHead>Address</TableHead>
@@ -112,8 +112,8 @@ export default function Page() {
                   <TableCell className="font-medium">
                     {info.code}
                   </TableCell>
-                  <TableCell>{info.first_name}</TableCell>
                   <TableCell>{info.last_name}</TableCell>
+                  <TableCell>{info.first_name}</TableCell>
                   <TableCell>{formatDate(info.date_of_birth)}</TableCell>
                   <TableCell>{info.gender}</TableCell>
                   <TableCell>{info.address}</TableCell>
@@ -188,7 +188,7 @@ export default function Page() {
                         <TableHead>Exam timestamp</TableHead>
                         <TableHead>Next exam date</TableHead>
                         <TableHead>Diagnosis</TableHead>
-                        <TableHead>Fee</TableHead>
+                        {/* <TableHead>Fee</TableHead> */}
                       </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -201,7 +201,7 @@ export default function Page() {
                         <TableCell> {formatDateTime(row.exam_timestamp)}</TableCell>
                         <TableCell>{formatDate(row.next_exam_date)}</TableCell>
                         <TableCell>{row.diagnosis}</TableCell>
-                        <TableCell>{row.fee}</TableCell>
+                        {/* <TableCell>{row.fee}</TableCell> */}
                       </TableRow>
                     );
                   })}

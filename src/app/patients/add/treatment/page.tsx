@@ -74,13 +74,12 @@ const formSchema = z.object({
   doctorcode: z.string().length(10, {
     message: "*Doctor code must be exactly 10 characters.",
   }),
-  result: z.string().min(1, {
-    message: "*Result must be at least 1 character.",
-  }).max(200, {
+  result: z.string().max(200, {
     message: "*Result must be at most 200 characters.",
-
   }),
-  starttime: z.string(),
+  starttime: z.string().min(1, {
+    message: "*Start timestamp must be input."
+  }),
   endtime: z.string(),
 });
 
@@ -119,6 +118,10 @@ export default function Login() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      result: "",
+      doctorcode: "",
+      starttime: "",
+      endtime: ""
     },
   });
 

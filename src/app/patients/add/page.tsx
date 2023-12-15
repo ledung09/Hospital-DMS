@@ -55,6 +55,7 @@ import {
   TabsTrigger,
 } from "@/components/ui/tabs"
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 
 const formSchema = z.object({
@@ -68,9 +69,7 @@ const formSchema = z.object({
   }).max(20, {
     message: "*Lastname must be at most 20 characters"
   }),
-  address: z.string().min(1, {
-    message: "*Address must be at least 1 characters.",
-  }).max(200, {
+  address: z.string().max(200, {
     message: "*Address must be at most 200 characters"
   }),
   phone: z.string().max(11, {
@@ -86,7 +85,10 @@ const formSchema = z.object({
 
 
 export default function Login() {
+  const router = useRouter();
   const [insertState, setInsertState] = useState<boolean>(false)
+  const [warning, setWarning] = useState<string>("Data input invalid")
+
   const [insertID, setInsertID] = useState<number>(0)
   const [insertLoading, setInsertLoading] = useState<boolean>(false)
 
@@ -121,9 +123,10 @@ export default function Login() {
           gender
         })
       });
-      const { res, id } = await response.json();
+      const { res, id, warning } = await response.json();
       setInsertLoading(false);
       setInsertState(res === 'success')
+      setWarning(warning)
       setInsertID(id)
       console.log(res)
       console.log(id)
@@ -284,109 +287,6 @@ export default function Login() {
           />
           
 
-            {/* <FormField
-              control={form.control}
-              name="username"
-              render={({ field }) => (
-                <FormItem className="basis-1/2">
-                  <FormLabel>Admission timestamp</FormLabel>
-                  <FormControl>
-                    <Input placeholder="shadcn" {...field} type="datetime-local" />
-                  </FormControl>
-                  <FormDescription>
-                    This is your public display name.
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="username"
-              render={({ field }) => (
-                <FormItem className="basis-1/2">
-                  <FormLabel>Nurse Code</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Enter patient`'s` firstname" {...field} />
-                  </FormControl>
-                  <FormDescription>
-                    This is your public display name.
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="username"
-              render={({ field }) => (
-                <FormItem className="basis-1/2">
-                  <FormLabel>Diagnosis</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Enter patient's firstname" {...field} />
-                  </FormControl>
-                  <FormDescription>
-                    This is your public display name.
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="username"
-              render={({ field }) => (
-                <FormItem className="basis-1/2">
-                  <FormLabel>Sickroom</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Enter patient's firstname" {...field} />
-                  </FormControl>
-                  <FormDescription>
-                    This is your public display name.
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="username"
-              render={({ field }) => (
-                <FormItem className="basis-1/2">
-                  <FormLabel>Fee</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Enter patient's firstname" {...field} />
-                  </FormControl>
-                  <FormDescription>
-                    This is your public display name.
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="username"
-              render={({ field }) => (
-                <FormItem className="basis-1/2">
-                  <FormLabel>Discharge timestamp</FormLabel>
-                  <FormControl>
-                    <Input placeholder="shadcn" {...field} type="datetime-local" />
-                  </FormControl>
-                  <FormDescription>
-                    This is your public display name.
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            /> */}
-
-
           
 
           
@@ -417,7 +317,7 @@ export default function Login() {
                       insertState ? 
                       <p>Patient data is inserted! Press Continue to redirect to patient information page.</p>
                       :
-                      <p>This patient is already in the database! Press Continue to redirect to patient information page.</p>
+                      <p>{warning}</p>
 
 
                   }
@@ -425,13 +325,16 @@ export default function Login() {
               </AlertDialogHeader>
               <AlertDialogFooter>
                 <AlertDialogCancel>Cancel</AlertDialogCancel>
-                <AlertDialogAction>
-                  <Button variant='default' size='sm' onClick={() => {
-                    if (!insertLoading) {
-                      window.location.href = `/patients/info?id=${insertID}`
-                    }
-                  }}>Continue</Button>
-                </AlertDialogAction>
+                {
+                  insertState &&
+                  <AlertDialogAction>
+                    <Button variant='default' size='sm' onClick={() => {
+                      if (!insertLoading) {
+                        router.push(`/patients/info?id=${insertID}`)
+                      }
+                    }}>Continue</Button>
+                  </AlertDialogAction>
+                }
               </AlertDialogFooter>
             </AlertDialogContent>
           </AlertDialog>

@@ -92,9 +92,6 @@ export default function Page() {
         setSumTreatment(sumtreatment);
         setSumFee(sumfee);
 
-
-
-
         const response2 = await fetch(`/api/patient/outpatient?id=${id}`);
         const { examination, exam_medication, sumexam, sumexammed } = await response2.json();
         setExamination(examination);
@@ -124,8 +121,8 @@ export default function Page() {
             <TableHeader>
               <TableRow>
                 <TableHead>Patient number</TableHead>
-                <TableHead>Firstname</TableHead>
                 <TableHead>Lastname</TableHead>
+                <TableHead>Firstname</TableHead>
                 <TableHead>DOB</TableHead>
                 <TableHead>Gender</TableHead>
                 <TableHead>Address</TableHead>
@@ -138,8 +135,8 @@ export default function Page() {
                   <TableCell className="font-medium">
                     {info.patient_number}
                   </TableCell>
-                  <TableCell>{info.first_name}</TableCell>
                   <TableCell>{info.last_name}</TableCell>
+                  <TableCell>{info.first_name}</TableCell>
                   <TableCell>{formatDate(info.date_of_birth)}</TableCell>
                   <TableCell>{info.gender}</TableCell>
                   <TableCell>{info.address}</TableCell>
@@ -152,6 +149,7 @@ export default function Page() {
           </Table>
         </CardContent>
       </Card>
+
       <Card className="my-8">
         <CardHeader>
           <div className="flex justify-between items-center w-100">
@@ -411,26 +409,6 @@ export default function Page() {
                       <TableCell>
                       <Sheet>
                                           <SheetTrigger>
-                                            {/* <Button 
-                                              variant="default" 
-                                              // onClick={async() => {
-                                              //   const response = await fetch('/api/medication/treatment', {
-                                              //     method: 'POST',
-                                              //     headers: {
-                                              //       'Content-Type': 'application/json',
-                                              //     },
-                                              //     body: JSON.stringify({ 
-                                              //       pid: treatment_row.patient_number,
-                                              //       adtime: treatment_row.admission_timestamp,
-                                              //       starttime: treatment_row.start_timestamp
-                                              //     })
-                                              //   });
-                                              //   const { tasks } = await response.json();
-                                              //   console.log(tasks)
-                                              // }}
-                                            >
-                                              
-                                            </Button> */}
                                             Open
                                           </SheetTrigger>
                                           <SheetContent side="top">
@@ -504,7 +482,7 @@ export default function Page() {
         </CardContent>
       </Card>
 
-
+      
       <Card className="my-8 border-2 border-red-500">
         <CardHeader>
           <CardTitle>Total payment</CardTitle>

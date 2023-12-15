@@ -34,8 +34,8 @@ export async function POST(req: Request){
       const { rows: patient_id } = await pool.query(sql1);
 
 
-      return Response.json({ res: "success", id: patient_id[0].patient_number }, { status: 200 });
-    } else return Response.json({ res: "fail", id: phones[0].patient_number }, { status: 200 });
+      return Response.json({ res: "success", id: patient_id[0].patient_number, warning: "" }, { status: 200 });
+    } else return Response.json({ res: "fail", id: phones[0].patient_number, warning: "Phone number already existed in the database!" }, { status: 200 });
   } 
 
 

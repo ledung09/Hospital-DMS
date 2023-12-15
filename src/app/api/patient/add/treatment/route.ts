@@ -48,14 +48,14 @@ export async function POST(req: Request) {
       { status: 200 }
     );
 
-  if (!isStartDateBeforeEndDate(body.admissiontime, body.starttime)) {
+  if (body.starttime !== "" && !isStartDateBeforeEndDate(body.admissiontime, body.starttime)) {
     return Response.json(
       { res: "fail", warning: "Admission timestamp is after Start timestamp!" },
       { status: 200 }
     );
   }
 
-  if (!isStartDateBeforeEndDate(body.starttime, body.endtime)) {
+  if (body.starttime !== "" && body.endtime !== "" && !isStartDateBeforeEndDate(body.starttime, body.endtime)) {
     return Response.json(
       { res: "fail", warning: "Start timestamp is after End timestamp!" },
       { status: 200 }
@@ -96,8 +96,8 @@ export async function POST(req: Request) {
     ${body.id},
     '${body.ip}',
     '${body.admissiontime}',
-    '${body.starttime}',
-    '${body.endtime}',
+    ${body.starttime === "" ? null : `'${body.starttime}'`},
+    ${body.endtime === "" ? null : `'${body.endtime}'`},
     '${body.result}'
   );
   `;

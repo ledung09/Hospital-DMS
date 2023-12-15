@@ -66,18 +66,14 @@ const formSchema = z.object({
   doctorcode: z.string().length(10, {
     message: "*Doctorcode must be exactly 10 characters.",
   }),
-  diagnosis: z.string().min(1, {
-    message: "*Diagnosis must be at least 1 character.",
-  }).max(200, {
+  diagnosis: z.string().max(200, {
     message: "*Diagnosis must be at most 200 characters.",
   }),
-  fee: z.string().min(3, {
-    message: "*Password must be at least 3 characters.",
+  fee: z.string(),
+  examtime: z.string().min(1, {
+    message: "*Exam timestamp must be input."
   }),
-  examtime: z.string(),
-  nextexamdate: z.date({
-    required_error: "Next exam date is required.",
-  }),
+  nextexamdate: z.string(),
 });
 
 export default function Login() {
@@ -112,7 +108,13 @@ export default function Login() {
   //
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {},
+    defaultValues: {
+      doctorcode: "",
+      examtime: "",
+      nextexamdate: "",
+      diagnosis: "",
+      fee: ""
+    },
   });
 
   // 2. Define a submit handler.
@@ -133,7 +135,7 @@ export default function Login() {
           opcode: ipcode,
           doctorcode,
           diagnosis,
-          fee,
+          fee: parseInt(fee === "" ? '0' : fee),
           examtime: addHoursToDateTime(examtime),
           nextexamdate,
         }),
@@ -209,51 +211,22 @@ export default function Login() {
           )}
         />
 
-<FormField
-          control={form.control}
-          name="nextexamdate"
-          render={({ field }) => (
-            <FormItem className="flex flex-col">
-              <FormLabel>Next exam date</FormLabel>
-              <Popover>
-                <PopoverTrigger asChild>
-                  <FormControl>
-                    <Button
-                      variant={"outline"}
-                      className={cn(
-                        "w-[240px] pl-3 text-left font-normal",
-                        !field.value && "text-muted-foreground"
-                      )}
-                    >
-                      {field.value ? (
-                        format(field.value, "PPP")
-                      ) : (
-                        <span>Pick a date</span>
-                      )}
-                      <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                    </Button>
-                  </FormControl>
-                </PopoverTrigger>
-                <PopoverContent className="w-auto p-0" align="start">
-                  <Calendar
-                    mode="single"
-                    selected={field.value}
-                    onSelect={field.onChange}
-                    disabled={(date) =>
-                      date > new Date() || date < new Date("1900-01-01")
-                    }
-                    initialFocus
-                  />
-                </PopoverContent>
-              </Popover>
-              <FormDescription>
-              Outpatient&apos;s next exam date.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
+          <FormField
+            control={form.control}
+            name="nextexamdate"
+            render={({ field }) => (
+              <FormItem className="basis-1/2">
+                <FormLabel>Next exam date</FormLabel>
+                <FormControl>
+                  <Input placeholder="shadcn" {...field} type="date" />
+                </FormControl>
+                <FormDescription>
+                Outpatient&apos;s next exam date.
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
         <FormField
           control={form.control}

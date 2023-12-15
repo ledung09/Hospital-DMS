@@ -11,7 +11,10 @@ export const GET = async (req: Request) => {
     connectionString: process.env.DATABASE_URL,
   });
 
-  const sql =`SELECT * FROM doctor where code = '${id}'`
+  const sql =`
+    SELECT * FROM doctor where code = '${id}'
+    OR CONCAT(last_name, ' ', first_name) ILIKE '${id}' 
+  `
   const { rows: doctor } = await pool.query(sql);
 
   const treatmentSql =`select * from Treatment where doctor_code = '${id}'`

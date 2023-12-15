@@ -11,6 +11,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
@@ -24,6 +25,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+
 import { Input } from "@/components/ui/input";
 import { signIn } from "next-auth/react";
 import { cn } from "@/lib/utils";
@@ -71,20 +73,16 @@ function displayIP(ip: number) {
 
 const formSchema = z.object({
   inpatientcode: z.string().nullish(),
-  nursecode: z.string().length(10, {
-    message: "*Nursecode must be exactly 10 characters.",
+  nursecode: z.string().max(10, {
+    message: "*Nursecode must be at most 10 characters.",
   }),
-  diagnosis: z.string().min(1, {
-    message: "*Diagnosis must be at least 1 characters.",
-  }).max(200, {
+  diagnosis: z.string().max(200, {
     message: "*Diagnosis must be at most 200 characters.",
   }),
-  sickroom: z.string().length(6, {
-    message: "*Sickroom must be exactly 6 characters.",
+  sickroom: z.string().max(8, {
+    message: "*Sickroom must be at most 8 characters.",
   }),
-  fee: z.string().min(3, {
-    message: "*Fee must be at least 3 characters.",
-  }),
+  fee: z.string(),
   admissiontime: z.string(),
   dischargetime: z.string(),
   recovered: z.enum(["yes", "no"], {
@@ -128,6 +126,12 @@ export default function Login() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      nursecode: "",
+      diagnosis: "",
+      sickroom: "",
+      recovered: "no",
+      fee: "",
+      dischargetime: ""
     },
   });
 
@@ -151,7 +155,7 @@ export default function Login() {
           diagnosis,
           sickroom,
           recovered,
-          fee,
+          fee: parseInt(fee === "" ? "0" : fee),
           admissiontime: addHoursToDateTime(admissiontime),
           dischargetime: addHoursToDateTime(dischargetime)
         })
