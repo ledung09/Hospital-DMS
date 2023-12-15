@@ -37,9 +37,7 @@ const handler = NextAuth({
         var user;
         if (rows.length > 0) {
           user = {
-            id: rows[0].user_id,
             name: rows[0].username,
-            email: "",
           };
         } else user = null;
         if (user) return user; else return null;

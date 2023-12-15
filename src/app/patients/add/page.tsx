@@ -99,7 +99,8 @@ export default function Login() {
       firstname: "",
       lastname: "",
       address: "",
-      phone: ""
+      phone: "",
+      gender: "male"
     },
   });
 
@@ -142,22 +143,7 @@ export default function Login() {
           className="space-y-8 max-w-6xl mx-auto my-6"
         >
           <div className="flex space-x-10">
-            <FormField
-              control={form.control}
-              name="firstname"
-              render={({ field }) => (
-                <FormItem className="basis-1/2">
-                  <FormLabel>Firstname</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Enter patient&apos;s firstname..." {...field} />
-                  </FormControl>
-                  <FormDescription>
-                    Patient&apos;s firstname.
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            
             <FormField
               control={form.control}
               name="lastname"
@@ -169,6 +155,23 @@ export default function Login() {
                   </FormControl>
                   <FormDescription>
                   Patient&apos;s lastname
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="firstname"
+              render={({ field }) => (
+                <FormItem className="basis-1/2">
+                  <FormLabel>Firstname</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Enter patient&apos;s firstname..." {...field} />
+                  </FormControl>
+                  <FormDescription>
+                    Patient&apos;s firstname.
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
