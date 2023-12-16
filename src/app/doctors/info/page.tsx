@@ -139,7 +139,7 @@ export default function Page() {
 
       <Card className="my-8">
         <CardHeader>
-        <CardTitle>Admission list</CardTitle>
+        <CardTitle>Treatment list</CardTitle>
           <CardDescription>{id ? `Doctor code = ${id}` : ""}</CardDescription>
           </CardHeader>
         <CardContent>
@@ -148,6 +148,8 @@ export default function Page() {
                       <TableRow>
                         <TableHead>Patient number</TableHead>
                         <TableHead>Inpatient code</TableHead>
+                        <TableHead>Last name</TableHead>
+                        <TableHead>First name</TableHead>
                         <TableHead>Admission timestamp</TableHead>
                         <TableHead>Start timestamp</TableHead>
                         <TableHead>End timestamp</TableHead>
@@ -161,6 +163,8 @@ export default function Page() {
                       <TableRow className="cursor-pointer" key={idx} onClick={() => router.push(`/patients/info?id=${row.patient_number}`)}>
                         <TableCell className="font-medium"> {row.patient_number}</TableCell>
                         <TableCell>{row.inpatient_code}</TableCell>
+                        <TableHead>{row.last_name}</TableHead>
+                        <TableHead>{row.first_name}</TableHead>
                         <TableCell> {formatDateTime(row.admission_timestamp)}</TableCell>
                         <TableCell>{formatDateTime(row.start_timestamp)}</TableCell>
                         <TableCell>{formatDateTime(row.end_timestamp)}</TableCell>
@@ -185,6 +189,8 @@ export default function Page() {
                       <TableRow>
                         <TableHead>Patient number</TableHead>
                         <TableHead>Outpatient code</TableHead>
+                        <TableHead>Last name</TableHead>
+                        <TableHead>First name</TableHead>
                         <TableHead>Exam timestamp</TableHead>
                         <TableHead>Next exam date</TableHead>
                         <TableHead>Diagnosis</TableHead>
@@ -198,6 +204,8 @@ export default function Page() {
                       <TableRow className="cursor-pointer" key={idx} onClick={() => router.push(`/patients/info?id=${row.patient_number}`)}>
                         <TableCell className="font-medium"> {row.patient_number}</TableCell>
                         <TableCell>{row.outpatient_code}</TableCell>
+                        <TableHead>{row.last_name}</TableHead>
+                        <TableHead>{row.first_name}</TableHead>
                         <TableCell> {formatDateTime(row.exam_timestamp)}</TableCell>
                         <TableCell>{formatDate(row.next_exam_date)}</TableCell>
                         <TableCell>{row.diagnosis}</TableCell>

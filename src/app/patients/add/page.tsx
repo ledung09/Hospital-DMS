@@ -75,9 +75,7 @@ const formSchema = z.object({
   phone: z.string().max(11, {
     message: "*Phone must be at most 11 characters"
   }),
-  dob: z.date({
-    required_error: "A date of birth is required.",
-  }),
+  dob: z.string(),
   gender: z.enum(["male", "female"], {
     required_error: "You need to select a gender.",
   })
@@ -100,7 +98,8 @@ export default function Login() {
       lastname: "",
       address: "",
       phone: "",
-      gender: "male"
+      gender: "male",
+      dob: ""
     },
   });
 
@@ -149,7 +148,7 @@ export default function Login() {
               name="lastname"
               render={({ field }) => (
                 <FormItem className="basis-1/2">
-                  <FormLabel>Lastname</FormLabel>
+                  <FormLabel>Lastname *</FormLabel>
                   <FormControl>
                     <Input placeholder="Enter patient&apos;s lastname..." {...field} />
                   </FormControl>
@@ -166,7 +165,7 @@ export default function Login() {
               name="firstname"
               render={({ field }) => (
                 <FormItem className="basis-1/2">
-                  <FormLabel>Firstname</FormLabel>
+                  <FormLabel>Firstname *</FormLabel>
                   <FormControl>
                     <Input placeholder="Enter patient&apos;s firstname..." {...field} />
                   </FormControl>
@@ -210,43 +209,17 @@ export default function Login() {
               </FormItem>
             )}
           />
+
+
           <FormField
             control={form.control}
             name="dob"
             render={({ field }) => (
-              <FormItem className="flex flex-col">
+              <FormItem className="basis-1/2">
                 <FormLabel>Date of birth</FormLabel>
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <FormControl>
-                      <Button
-                        variant={"outline"}
-                        className={cn(
-                          "w-[240px] pl-3 text-left font-normal",
-                          !field.value && "text-muted-foreground"
-                        )}
-                      >
-                        {field.value ? (
-                          format(field.value, "PPP")
-                        ) : (
-                          <span>Pick a date</span>
-                        )}
-                        <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                      </Button>
-                    </FormControl>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0" align="start">
-                    <Calendar
-                      mode="single"
-                      selected={field.value}
-                      onSelect={field.onChange}
-                      disabled={(date) =>
-                        date > new Date() || date < new Date("1900-01-01")
-                      }
-                      initialFocus
-                    />
-                  </PopoverContent>
-                </Popover>
+                <FormControl>
+                  <Input placeholder="shadcn" {...field} type="date" />
+                </FormControl>
                 <FormDescription>
                 Patient&apos;s date of birth.
                 </FormDescription>
@@ -254,6 +227,7 @@ export default function Login() {
               </FormItem>
             )}
           />
+
           <FormField
             control={form.control}
             name="gender"

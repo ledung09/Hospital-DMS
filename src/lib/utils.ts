@@ -18,7 +18,7 @@ export function formatDateTime(inputDateString: string | null) {
     const d = new Date(inputDateString);
     
     // Add 7 hours to the date
-    // d.setUTCHours(d.getUTCHours() + 7);
+    d.setUTCHours(d.getUTCHours() + 7);
 
     const f = (n: number) => n.toString().padStart(2, '0');
     return `${f(d.getUTCDate())}/${f(d.getUTCMonth() + 1)}/${d.getUTCFullYear()} - ${f(d.getUTCHours())}:${f(d.getUTCMinutes())}:${f(d.getUTCSeconds())}`;
@@ -26,12 +26,23 @@ export function formatDateTime(inputDateString: string | null) {
   return "";
 }
 
+
 export function addHoursToDateTime(dateTimeString: string | null) {
   if (dateTimeString) {
     const originalDate = new Date(dateTimeString);
-    // originalDate.setHours(originalDate.getHours() + 7);
+    originalDate.setHours(originalDate.getHours() + 7);
     const formattedDate = originalDate.toISOString().replace('T', ' ').slice(0, 19);
     return formattedDate;
   }
   return ""
+}
+
+export function combineCodeAndConcat(arr: {code: string, concat: string}[]) {
+  if (arr.length === 0) {
+    return [];
+  }
+  return arr.map(obj => ({
+    label: `${obj.code} - ${obj.concat}`,
+    value: obj.code
+  }));
 }

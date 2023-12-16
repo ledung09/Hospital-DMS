@@ -179,7 +179,7 @@ export default function Page() {
                         <TableHead>Recovered</TableHead>
                         <TableHead>Fee</TableHead>
                         <TableHead>Discharge timestamp</TableHead>
-                        <TableHead>Total treatment cost</TableHead>
+                        <TableHead>Total medication cost</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -191,9 +191,9 @@ export default function Page() {
                         <TableCell>{row.diagnosis}</TableCell>
                         <TableCell>{row.sick_room}</TableCell>
                         <TableCell>{row.recovered ? "Yes" : "No"}</TableCell>
-                        <TableCell>{row.fee}</TableCell>
+                        <TableCell>{row.fee} VND</TableCell>
                         <TableCell>{formatDateTime(row.discharge_timestamp)}</TableCell>
-                        <TableCell>{row.total_value}</TableCell>
+                        <TableCell>{!row.total_value ? '0' : row.total_value} VND</TableCell>
                       </TableRow>
                     </TableBody>
                   </Table>
@@ -281,9 +281,9 @@ export default function Page() {
                                                             <TableRow key={idx}>
                                                               <TableCell className="font-medium">{treatment_med_row.code}</TableCell>
                                                               <TableCell>{treatment_med_row.name_}</TableCell>
-                                                              <TableCell>{treatment_med_row.price}</TableCell>
+                                                              <TableCell>{!treatment_med_row.price? '0' : treatment_med_row.price} VND</TableCell>
                                                               <TableCell>{treatment_med_row.quantity}</TableCell>
-                                                              <TableCell>{treatment_med_row.total_value}</TableCell>
+                                                              <TableCell>{!treatment_med_row.total_value ? '0' : treatment_med_row.total_value} VND</TableCell>
 
 
                                                               
@@ -332,13 +332,13 @@ export default function Page() {
                   <Alert className="my-5 mt-8">
                     <Terminal className="h-4 w-4" />
                     <AlertTitle>
-                      <p className="font-semibold">Treatment(s) cost: <span className="font-normal">{row.total_value === null ? 0 : row.total_value}</span></p>
+                      <p className="font-semibold">Admission fee cost: <span className="font-normal">{row.fee === null ? 0 : row.fee} VND</span></p>
                     </AlertTitle>
                     <AlertTitle className="mt-4">
-                      <p className="font-semibold">Admission fee cost: <span className="font-normal">{row.fee === null ? 0 : row.fee}</span></p>
+                      <p className="font-semibold">Medication cost: <span className="font-normal">{row.total_value === null ? 0 : row.total_value} VND</span></p>
                     </AlertTitle>
                     <AlertTitle className="mt-4">
-                      <p className="font-semibold">Sum cost: <span className="font-normal">{`${parseInt(row.total_value === null ? '0' : row.total_value.toString()) + parseInt(row.fee === null ? '0' : row.fee.toString())}`}</span></p>
+                      <p className="font-semibold">Sum cost: <span className="font-normal">{`${parseInt(row.total_value === null ? '0' : row.total_value.toString()) + parseInt(row.fee === null ? '0' : row.fee.toString())}`} VND</span></p>
                     </AlertTitle>
                   </Alert>
 
@@ -351,13 +351,13 @@ export default function Page() {
 <Alert className="my-5 mt-8 border-red-500">
                     <Terminal className="h-4 w-4" />
                     <AlertTitle>
-                      <p className="font-semibold">Total treatments cost: <span className="font-normal">{sumTreatment === null ? 0 : sumTreatment}</span></p>
+                      <p className="font-semibold">Total admission fee: <span className="font-normal">{sumTreatment === null ? 0 : sumTreatment}</span></p>
                     </AlertTitle>
                     <AlertTitle className="mt-4">
-                      <p className="font-semibold">Total admission fee: <span className="font-normal">{sumFee === null ? 0: sumFee}</span></p>
+                      <p className="font-semibold">Total medication cost: <span className="font-normal">{sumFee === null ? 0: sumFee}</span></p>
                     </AlertTitle>
                     <AlertTitle className="mt-4">
-                      <p className="font-semibold">Total admission cost: <span className="font-normal">{`${parseInt(sumTreatment === null ? '0' : sumTreatment.toString()) + parseInt(sumFee === null ? '0' : sumFee.toString())}`}</span></p>
+                      <p className="font-semibold">Total cost: <span className="font-normal">{`${parseInt(sumTreatment === null ? '0' : sumTreatment.toString()) + parseInt(sumFee === null ? '0' : sumFee.toString())}`}</span></p>
                     </AlertTitle>
                   </Alert>
         </CardContent>
@@ -405,7 +405,7 @@ export default function Page() {
                       </TableCell>
                       <TableCell>{formatDate(row.next_exam_date)}</TableCell>
                       <TableCell>{row.diagnosis}</TableCell>
-                      <TableCell>{row.fee}</TableCell>
+                      <TableCell>{!row.fee ? '0' : row.fee} VND</TableCell>
                       <TableCell>
                       <Sheet>
                                           <SheetTrigger>
@@ -437,9 +437,9 @@ export default function Page() {
                                                             <TableRow key={idx}>
                                                               <TableCell className="font-medium">{exam_med_row.medication_code}</TableCell>
                                                               <TableCell>{exam_med_row.name_}</TableCell>
-                                                              <TableCell>{exam_med_row.price}</TableCell>
+                                                              <TableCell>{exam_med_row.price} VND</TableCell>
                                                               <TableCell>{exam_med_row.quantity}</TableCell>
-                                                              <TableCell>{exam_med_row.total_value}</TableCell>
+                                                              <TableCell>{exam_med_row.total_value} VND</TableCell>
 
 
                                                               
@@ -470,13 +470,13 @@ export default function Page() {
           <Alert className="my-5 mt-8 border-red-500">
                     <Terminal className="h-4 w-4" />
                     <AlertTitle>
-                      <p className="font-semibold">Total medicines cost: <span className="font-normal">{sumExamMed === null ? 0 : sumExamMed}</span></p>
+                      <p className="font-semibold">Total examination fee: <span className="font-normal">{sumExam === null ? 0: sumExam} VND</span></p>
                     </AlertTitle>
                     <AlertTitle className="mt-4">
-                      <p className="font-semibold">Total examination fee: <span className="font-normal">{sumExam === null ? 0: sumExam}</span></p>
+                     <p className="font-semibold">Total medicines cost: <span className="font-normal">{sumExamMed === null ? 0 : sumExamMed} VND</span></p>
                     </AlertTitle>
                     <AlertTitle className="mt-4">
-                      <p className="font-semibold">Total examination cost: <span className="font-normal">{`${parseInt(sumExamMed === null ? '0' : sumExamMed.toString()) + parseInt(sumExam === null ? '0' : sumExam.toString())}`}</span></p>
+                      <p className="font-semibold">Total cost: <span className="font-normal">{`${parseInt(sumExamMed === null ? '0' : sumExamMed.toString()) + parseInt(sumExam === null ? '0' : sumExam.toString())}`} VND</span></p>
                     </AlertTitle>
                   </Alert>
         </CardContent>
@@ -492,7 +492,7 @@ export default function Page() {
           <div className="flex items-center gap-2">
                 <Terminal className="h-4 w-4" />
                 <AlertTitle>
-                  <p className="font-semibold mt-0.5">Total payment: <span className="font-normal">{`${parseInt(sumExamMed === null ? '0' : sumExamMed.toString()) + parseInt(sumExam === null ? '0' : sumExam.toString())+parseInt(sumTreatment === null ? '0' : sumTreatment.toString()) + parseInt(sumFee === null ? '0' : sumFee.toString())}`}</span></p>
+                  <p className="font-semibold mt-0.5">Total payment: <span className="font-normal">{`${parseInt(sumExamMed === null ? '0' : sumExamMed.toString()) + parseInt(sumExam === null ? '0' : sumExam.toString())+parseInt(sumTreatment === null ? '0' : sumTreatment.toString()) + parseInt(sumFee === null ? '0' : sumFee.toString())}`} VND</span></p>
                 </AlertTitle>
           </div>
         </CardContent>

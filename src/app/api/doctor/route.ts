@@ -17,10 +17,32 @@ export const GET = async (req: Request) => {
   `
   const { rows: doctor } = await pool.query(sql);
 
-  const treatmentSql =`select * from Treatment where doctor_code = '${id}'`
+  const treatmentSql =`
+  SELECT
+    T.*,
+    P.First_Name,
+    P.Last_Name
+  FROM
+      Treatment AS T
+  JOIN
+      Patient AS P ON T.Patient_Number = P.Patient_Number
+  WHERE
+      T.Doctor_Code = '${id}';
+  `
   const { rows: treatments } = await pool.query(treatmentSql);
 
-  const examinationSql =`select * from Examination where doctor_code = '${id}'`
+  const examinationSql =`
+  SELECT
+    E.*,
+    P.First_Name,
+    P.Last_Name
+  FROM
+      Examination AS E
+  JOIN
+      Patient AS P ON E.Patient_Number = P.Patient_Number
+  WHERE
+      E.Doctor_Code = '${id}';
+  `
   const { rows: examinations } = await pool.query(examinationSql);
 
 

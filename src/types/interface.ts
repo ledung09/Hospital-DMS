@@ -30,6 +30,8 @@ export interface treatment {
   start_timestamp: string;
   end_timestamp: string;
   result_: string;
+  last_name?: string;
+  first_name?: string;
 }
 
 export interface treatment_medication extends treatment {
@@ -48,6 +50,8 @@ export interface examination {
   next_exam_date: string;
   diagnosis: string;
   fee: number;
+  last_name?: string;
+  first_name?: string;
 }
 
 export interface exam_medication extends examination {

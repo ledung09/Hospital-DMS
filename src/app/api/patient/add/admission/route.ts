@@ -93,7 +93,7 @@ export async function POST(req: Request){
     `
     const { rows: heighestID } = await pool.query(heighestIPSql);
     
-    return Response.json({ state: "new", ip: "", maxip: heighestID[0].ip_code }, { status: 200 });
+    // return Response.json({ state: "new", ip: "", maxip: heighestID[0].ip_code }, { status: 200 });
 
   } 
 
