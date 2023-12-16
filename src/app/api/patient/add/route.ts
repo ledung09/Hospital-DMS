@@ -68,7 +68,7 @@ export async function POST(req: Request){
   SELECT * FROM patient where 
   first_name = '${body.firstname}' AND 
   last_name = '${body.lastname}' AND
-  date_of_birth = '${body.dob}' AND
+  date_of_birth = ${body.dob === "" ? null : `'${body.dob}'`} AND
   gender = '${gender}' AND
   address = '${body.address}'
   ;
@@ -79,6 +79,11 @@ export async function POST(req: Request){
   const { rows: invalid } = await pool.query(sqlcheck);
   if (invalid.length > 0) {
     return Response.json({ res: "fail", id: invalid[0].patient_number, warning: "This patient is already existed in the database!" }, { status: 200 });
+  }
+
+  if (body.dob !== "") {
+    if (!isWithin100Years(body.dob))
+      return Response.json({ res: "fail", id: 1, warning: "Date of birth is invalid!" }, { status: 200 });
   }
 
   const sql =`
